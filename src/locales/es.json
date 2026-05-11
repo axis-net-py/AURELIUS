@@ -36,7 +36,9 @@
     "active_areas": "Áreas Activas",
     "active_fields": "Lotes en producción",
     "monthly_flow": "Flujo Financiero (Mensual)",
-    "expenses_by_category": "Gastos por Categoría"
+    "expenses_by_category": "Gastos por Categoría",
+    "revenue_description": "Ventas de Soja y Maíz",
+    "expenses_description": "Insumos y Diésel"
   },
   "fields": {
     "title": "Control de Lotes",

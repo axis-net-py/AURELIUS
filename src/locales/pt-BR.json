@@ -36,7 +36,9 @@
     "active_areas": "Áreas Ativas",
     "active_fields": "Talhões em produção",
     "monthly_flow": "Fluxo Financeiro (Mensal)",
-    "expenses_by_category": "Gastos por Categoria"
+    "expenses_by_category": "Gastos por Categoria",
+    "revenue_description": "Vendas de Soja e Milho",
+    "expenses_description": "Insumos e Diesel"
   },
   "fields": {
     "title": "Controle de Talhões",
