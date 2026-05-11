@@ -48,7 +48,7 @@ export const ReportsPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="rounded-[2rem] p-6 border-slate-200/50">
           <CardHeader><CardTitle>Lucratividade por Safra (R$)</CardTitle></CardHeader>
-          <CardContent className="h-[300px] w-full min-h-[300px]">
+          <CardContent className="w-full h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={profitabilityData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
@@ -65,7 +65,7 @@ export const ReportsPage: React.FC = () => {
 
           <Card className="rounded-[2rem] p-6 border-slate-200/50">
           <CardHeader><CardTitle>Distribuição de Despesas</CardTitle></CardHeader>
-          <CardContent className="h-[300px] w-full min-h-[300px]">
+          <CardContent className="w-full h-80">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie data={expenseData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value">
