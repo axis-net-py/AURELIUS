@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
@@ -34,6 +35,7 @@ export const AddSeasonModal: React.FC<AddSeasonModalProps> = ({ onSuccess }) => 
       <DialogContent className="sm:max-w-[425px] rounded-[2rem]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-heading font-bold">{t('seasons.add_title', 'Adicionar Nova Safra')}</DialogTitle>
+          <DialogDescription className="sr-only">Formulário para cadastro de uma nova safra agrícola.</DialogDescription>
         </DialogHeader>
         <NewSeasonForm onSuccess={handleSuccess} />
       </DialogContent>
