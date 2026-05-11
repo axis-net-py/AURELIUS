@@ -15,7 +15,7 @@ import { seasonService } from '@/services/seasonService'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useTranslation } from 'react-i18next'
 import { AddSeasonModal } from './components/AddSeasonModal'
-import { SeasonStatus } from '@/types/farm'
+import { type SeasonStatus } from '@/types/farm';
 
 const getStatusColor = (status: SeasonStatus) => {
   switch (status) {

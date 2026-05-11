@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { useTranslation } from 'react-i18next'
-import { aiService, ParsedAgroData } from '@/services/aiService'
+import { type ParsedAgroData, aiService } from '@/services/aiService'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Loader2, Send, CheckCircle2, AlertCircle } from 'lucide-react'
 
