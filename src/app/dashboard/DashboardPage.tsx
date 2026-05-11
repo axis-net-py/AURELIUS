@@ -120,7 +120,7 @@ export const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-card rounded-[2.5rem] border border-slate-200/50 p-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)]">
           <h3 className="text-lg font-heading font-bold mb-6">{t('dashboard.monthly_flow')}</h3>
-          <div className="h-[300px] w-full min-h-[300px]">
+          <div className="w-full h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -149,7 +149,7 @@ export const DashboardPage: React.FC = () => {
 
         <div className="bg-card rounded-[2.5rem] border border-slate-200/50 p-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)]">
           <h3 className="text-lg font-heading font-bold mb-6">{t('dashboard.expenses_by_category')}</h3>
-          <div className="h-[250px] w-full min-h-[250px]">
+          <div className="w-full h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
