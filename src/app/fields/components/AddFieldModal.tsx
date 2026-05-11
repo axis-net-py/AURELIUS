@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
@@ -32,6 +33,7 @@ export const AddFieldModal: React.FC<AddFieldModalProps> = ({ onSuccess }) => {
       <DialogContent className="sm:max-w-[425px] rounded-[2rem]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-heading font-bold">Adicionar Novo Talhão</DialogTitle>
+          <DialogDescription className="sr-only">Formulário para adicionar um novo talhão.</DialogDescription>
         </DialogHeader>
         <NewFieldForm onSuccess={handleSuccess} />
       </DialogContent>
