@@ -84,7 +84,7 @@ export const Sidebar: React.FC = () => {
           <div className="flex items-center">
             <LogOut className="h-5 w-5 text-muted-foreground group-hover:text-destructive transition-colors" />
             <div className="ml-3">
-              <p className="text-sm font-medium text-muted-foreground group-hover:text-destructive transition-colors">{t('actions.logout' || 'Sair')}</p>
+              <p className="text-sm font-medium text-muted-foreground group-hover:text-destructive transition-colors">{t('actions.logout') || 'Sair'}</p>
             </div>
           </div>
         </button>
