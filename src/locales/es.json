@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "dashboard": "Panel de Control",
+    "fields": "Campos",
+    "seasons": "Campañas",
+    "machinery": "Maquinaria",
+    "inventory": "Inventario",
+    "finance": "Finanzas",
+    "expenses": "Gastos",
+    "revenues": "Ingresos",
+    "ai_input": "Entrada AI",
+    "reports": "Informes",
+    "settings": "Configuración"
+  },
+  "actions": {
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "clear": "Limpiar",
+    "view_details": "Ver detalles"
+  },
+  "fields": {
+    "title": "Control de Campos",
+    "subtitle": "Gestione sus áreas de siembra.",
+    "view_map": "Ver Mapa",
+    "add_button": "Nuevo Campo",
+    "name": "Nombre",
+    "area": "Área (ha)",
+    "crop": "Cultivo",
+    "status": "Estado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "no_data": "No hay campos registrados."
+  },
+  "seasons": {
+    "title": "Control de Campañas",
+    "subtitle": "Gestione sus ciclos de producción.",
+    "add_button": "Nueva Campaña",
+    "add_title": "Agregar Nueva Campaña",
+    "name": "Nombre",
+    "commodity": "Commodity",
+    "start": "Inicio",
+    "status": {
+      "planned": "Planificada",
+      "active": "Activa",
+      "harvested": "Cosechada",
+      "closed": "Cerrada"
+    },
+    "no_data": "No hay campañas registradas.",
+    "form": {
+      "name": "Nombre de la Campaña",
+      "crop": "Cultivo",
+      "start_date": "Fecha de Inicio",
+      "status": "Estado"
+    }
+  }
+}
