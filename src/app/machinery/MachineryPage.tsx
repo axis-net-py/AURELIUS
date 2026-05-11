@@ -71,8 +71,12 @@ export const MachineryPage: React.FC = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <input {...form.register('name')} placeholder="Nome" className="w-full border p-2 rounded" />
                 <select {...form.register('type')} className="w-full border p-2 rounded">
-                    <option value="Trator">Trator</option>
-                    <option value="Colheitadeira">Colheitadeira</option>
+                    <option value="Trator">{t('machinery.types.tractor')}</option>
+                    <option value="Colheitadeira">{t('machinery.types.harvester')}</option>
+                    <option value="Plantadeira">{t('machinery.types.planter')}</option>
+                    <option value="Pulverizador">{t('machinery.types.sprayer')}</option>
+                    <option value="Caminhão">{t('machinery.types.truck')}</option>
+                    <option value="Outro">{t('machinery.types.other')}</option>
                 </select>
                 <Button type="submit">{t('actions.save', 'Salvar')}</Button>
             </form>
