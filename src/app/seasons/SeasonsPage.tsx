@@ -59,7 +59,7 @@ export const SeasonsPage: React.FC = () => {
                 <TableHead className="font-bold">{t('seasons.name', 'Nome')}</TableHead>
                 <TableHead className="font-bold">{t('seasons.commodity', 'Commodity')}</TableHead>
                 <TableHead className="font-bold">{t('seasons.start', 'Início')}</TableHead>
-                <TableHead className="font-bold">{t('seasons.status', 'Status')}</TableHead>
+                <TableHead className="font-bold">{t('seasons.statusLabel', 'Status')}</TableHead>
                 <TableHead></TableHead>
               </TableRow>
             </TableHeader>

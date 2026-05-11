@@ -1,58 +1,59 @@
 {
-  "nav": {
-    "dashboard": "Dashboard",
-    "fields": "Talhões",
-    "seasons": "Safras",
-    "machinery": "Maquinário",
-    "inventory": "Estoque",
-    "finance": "Financeiro",
-    "expenses": "Despesas",
-    "revenues": "Receitas",
-    "ai_input": "Entrada AI",
-    "reports": "Relatórios",
-    "settings": "Configurações"
-  },
-  "actions": {
-    "save": "Salvar",
-    "saving": "Salvando...",
-    "edit": "Editar",
-    "delete": "Excluir",
-    "clear": "Limpar",
-    "view_details": "Ver detalhes"
-  },
-  "fields": {
-    "title": "Controle de Talhões",
-    "subtitle": "Gerencie suas áreas de plantio.",
-    "view_map": "Visualizar Mapa",
-    "add_button": "Novo Talhão",
-    "name": "Nome",
-    "area": "Área (ha)",
-    "crop": "Cultura",
-    "status": "Status",
-    "active": "Ativo",
-    "inactive": "Inativo",
-    "no_data": "Nenhum talhão cadastrado."
-  },
-  "seasons": {
-    "title": "Controle de Safras",
-    "subtitle": "Gerencie seus ciclos de produção.",
-    "add_button": "Nova Safra",
-    "add_title": "Adicionar Nova Safra",
-    "name": "Nome",
-    "commodity": "Commodity",
-    "start": "Início",
-    "status": {
-      "planned": "Planejada",
-      "active": "Ativa",
-      "harvested": "Colhida",
-      "closed": "Encerrada"
-    },
-    "no_data": "Nenhuma safra cadastrada.",
-    "form": {
-      "name": "Nome da Safra",
-      "crop": "Cultura",
-      "start_date": "Data de Início",
-      "status": "Status"
-    }
-  }
+    "nav":  {
+                "dashboard":  "Dashboard",
+                "fields":  "Talhões",
+                "seasons":  "Safras",
+                "machinery":  "Maquinário",
+                "inventory":  "Estoque",
+                "finance":  "Financeiro",
+                "expenses":  "Despesas",
+                "revenues":  "Receitas",
+                "ai_input":  "Entrada AI",
+                "reports":  "Relatórios",
+                "settings":  "Configurações"
+            },
+    "actions":  {
+                    "save":  "Salvar",
+                    "saving":  "Salvando...",
+                    "edit":  "Editar",
+                    "delete":  "Excluir",
+                    "clear":  "Limpar",
+                    "view_details":  "Ver detalhes"
+                },
+    "fields":  {
+                   "title":  "Controle de Talhões",
+                   "subtitle":  "Gerencie suas áreas de plantio.",
+                   "view_map":  "Visualizar Mapa",
+                   "add_button":  "Novo Talhão",
+                   "name":  "Nome",
+                   "area":  "Área (ha)",
+                   "crop":  "Cultura",
+                   "status":  "Status",
+                   "active":  "Ativo",
+                   "inactive":  "Inativo",
+                   "no_data":  "Nenhum talhão cadastrado."
+               },
+    "seasons":  {
+                    "title":  "Controle de Safras",
+                    "subtitle":  "Gerencie seus ciclos de produção.",
+                    "add_button":  "Nova Safra",
+                    "add_title":  "Adicionar Nova Safra",
+                    "name":  "Nome",
+                    "commodity":  "Commodity",
+                    "start":  "Início",
+                    "status":  {
+                                   "planned":  "Planejada",
+                                   "active":  "Ativa",
+                                   "harvested":  "Colhida",
+                                   "closed":  "Encerrada"
+                               },
+                    "no_data":  "Nenhuma safra cadastrada.",
+                    "form":  {
+                                 "name":  "Nome da Safra",
+                                 "crop":  "Cultura",
+                                 "start_date":  "Data de Início",
+                                 "status":  "Status"
+                             },
+                    "statusLabel":  "Status"
+                }
 }

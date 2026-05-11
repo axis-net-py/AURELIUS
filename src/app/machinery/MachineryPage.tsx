@@ -2,8 +2,27 @@ import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Tractor, Plus, Wrench, Fuel } from 'lucide-react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { useTranslation } from 'react-i18next'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+import { supabase } from '@/lib/supabase'
+import { useAuthStore } from '@/store/useAuthStore'
+import { toast } from 'sonner' // Assuming sonner is installed, or adapt to your toast lib
+
+const schema = z.object({
+  name: z.string().min(1, 'Nome obrigatório'),
+  type: z.enum(['Trator','Colheitadeira','Plantadeira',
+                'Pulverizador','Caminhão','Outro']),
+  brand: z.string().optional(),
+  model: z.string().optional(),
+  year: z.number().int().min(1950).max(2030).optional(),
+  identifier: z.string().optional(),
+  current_hours: z.number().min(0).optional(),
+})
+
+type FormData = z.infer<typeof schema>
 
 const mockMachinery = [
   { id: '1', name: 'John Deere 8R', type: 'Trator', hours: '4.200h' },
@@ -12,7 +31,27 @@ const mockMachinery = [
 
 export const MachineryPage: React.FC = () => {
   const { t } = useTranslation()
+  const { user } = useAuthStore()
   const [isAddOpen, setIsAddOpen] = useState(false)
+  
+  const form = useForm<FormData>({
+    resolver: zodResolver(schema),
+  })
+
+  const onSubmit = async (data: FormData) => {
+    if (!user?.farm_id) return
+    const { error } = await supabase
+      .from('machinery')
+      .insert({ ...data, farm_id: user.farm_id })
+
+    if (error) {
+      toast.error('Erro ao salvar equipamento')
+      return
+    }
+    toast.success('Equipamento adicionado com sucesso')
+    setIsAddOpen(false)
+    form.reset()
+  }
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -24,11 +63,19 @@ export const MachineryPage: React.FC = () => {
       </div>
 
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
                 <DialogTitle>Adicionar Novo Maquinário</DialogTitle>
+                <DialogDescription className="sr-only">Formulário para adicionar equipamento</DialogDescription>
             </DialogHeader>
-            <p>Formulário em implementação...</p>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <input {...form.register('name')} placeholder="Nome" className="w-full border p-2 rounded" />
+                <select {...form.register('type')} className="w-full border p-2 rounded">
+                    <option value="Trator">Trator</option>
+                    <option value="Colheitadeira">Colheitadeira</option>
+                </select>
+                <Button type="submit">{t('actions.save', 'Salvar')}</Button>
+            </form>
         </DialogContent>
       </Dialog>
 
