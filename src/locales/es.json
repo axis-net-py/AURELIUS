@@ -8,7 +8,7 @@
     "finance": "Finanzas",
     "expenses": "Gastos",
     "revenues": "Ingresos",
-    "ai_input": "Entrada AI",
+    "ai_input": "Entrada IA",
     "reports": "Informes",
     "settings": "Configuración"
   },
@@ -143,6 +143,7 @@
     "buyer": "Comprador",
     "notes": "Observaciones",
     "receipt": "Comprobante",
+    "invoice": "Nota Fiscal",
     "payment_method": "Método de Pago",
     "season": "Campaña",
     "field": "Lote",
@@ -194,13 +195,18 @@
     "invite_user": "Invitar Usuario",
     "language": "Idioma",
     "currency": "Moneda",
-    "whatsapp_number": "Número WhatsApp"
+    "preferences": "Preferencias",
+    "dark_mode": "Modo Oscuro",
+    "whatsapp_section": "WhatsApp",
+    "whatsapp_number": "Número WhatsApp",
+    "whatsapp_hint": "Ej: +595981234567",
+    "currency_section": "Moneda Predeterminada"
   },
   "ai_input": {
-    "title": "Entrada AI",
+    "title": "Entrada IA",
     "subtitle": "Envíe datos por WhatsApp con voz o texto.",
     "how_it_works": "Cómo funciona",
-    "recent_logs": "Registros Recientes",
+    "recent_logs": "Registros Recentes",
     "phone": "Teléfono",
     "message": "Mensaje",
     "intent": "Intención Detectada",

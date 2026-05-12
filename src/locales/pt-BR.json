@@ -188,12 +188,12 @@
     "farm_profile": "Perfil da Fazenda",
     "farm_name": "Nome da Fazenda",
     "cnpj": "CNPJ",
-    "address": "Endereço",
-    "users": "Usuários",
-    "invite_user": "Convidar Usuário",
-    "language": "Idioma",
-    "currency": "Moeda",
-    "whatsapp_number": "Número WhatsApp"
+    "preferences": "Preferências",
+    "dark_mode": "Modo Escuro",
+    "whatsapp_section": "WhatsApp",
+    "whatsapp_number": "Número WhatsApp",
+    "whatsapp_hint": "Ex: +595981234567",
+    "currency_section": "Moeda Padrão"
   },
   "ai_input": {
     "title": "Entrada AI",
