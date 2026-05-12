@@ -6,7 +6,7 @@ import { ThemeToggle } from './ThemeToggle'
 import { LanguageToggle } from './LanguageToggle'
 import { AIInputModal } from '../ai/AIInputModal'
 import { Button } from '../ui/button'
-import { Send } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 
 export const AppShell: React.FC = () => {
   const [isAIModalOpen, setIsAIModalOpen] = useState(false)
@@ -32,10 +32,10 @@ export const AppShell: React.FC = () => {
 
       {/* Floating Action Button for Mobile AI Input */}
       <Button
-        className="lg:hidden fixed bottom-20 right-4 h-14 w-14 rounded-full shadow-2xl shadow-primary/30 z-40 bg-primary text-primary-foreground p-0"
+        className="fixed bottom-20 right-4 lg:bottom-8 lg:right-8 h-14 w-14 rounded-full shadow-2xl shadow-primary/30 z-40 bg-primary text-primary-foreground p-0"
         onClick={() => setIsAIModalOpen(true)}
       >
-        <Send className="h-6 w-6" />
+        <Sparkles className="h-6 w-6" />
       </Button>
 
       <BottomNav />
