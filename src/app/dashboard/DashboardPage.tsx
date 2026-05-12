@@ -24,8 +24,11 @@ import {
 } from 'recharts'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { ReportPDF } from '@/components/reports/ReportPDF';
 import { useCurrencyStore } from '@/store/useCurrencyStore'
 import { formatCurrency } from '@/lib/currency'
+
 
 const data = [
   { name: 'Jan', revenue: 4000, costs: 2400 },
@@ -58,6 +61,13 @@ export const DashboardPage: React.FC = () => {
               <SelectItem value="2024/2025">Safra 2024/2025</SelectItem>
             </SelectContent>
           </Select>
+          <PDFDownloadLink document={<ReportPDF data={{roi: 12, netProfit: '142.500', yield: '12.4'}} />} fileName="relatorio_safra.pdf">
+            {({ loading }) => (
+              <Button className="rounded-full bg-[#C19A6B] hover:bg-[#C19A6B]/90 text-white">
+                {loading ? t('common.loading') : 'Exportar Relatório'}
+              </Button>
+            )}
+          </PDFDownloadLink>
           <Button className="rounded-full" onClick={() => navigate('/revenues')}>
             <Plus className="mr-2 h-4 w-4" /> {t('dashboard.new_record')}
           </Button>
