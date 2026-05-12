@@ -25,9 +25,8 @@ import { ThemeToggle } from './ThemeToggle'
 const navigation = [
   { nameKey: 'dashboard', href: '/', icon: LayoutDashboard },
   { nameKey: 'fields', href: '/fields', icon: Map },
-  { nameKey: 'seasons', href: '/seasons', icon: Sprout },
-  { nameKey: 'machinery', href: '/machinery', icon: Truck },
   { nameKey: 'inventory', href: '/inventory', icon: Package },
+  { nameKey: 'machinery', href: '/machinery', icon: Truck },
   { nameKey: 'operations', href: '/operations', icon: ClipboardList },
   { nameKey: 'harvest', href: '/harvest', icon: Wheat },
   { nameKey: 'finance', href: '/finance', icon: Wallet },

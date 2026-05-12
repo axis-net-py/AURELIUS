@@ -29,8 +29,12 @@
     "close": "Fechar"
   },
   "dashboard": {
-    "title": "Olá",
-    "subtitle": "Aqui está o resumo da sua operação hoje.",
+    "title": "Painel de Controle",
+    "subtitle": "Visão estratégica da sua operação.",
+    "roi": "Rentabilidade (ROI)",
+    "break_even": "Ponto de Equilíbrio",
+    "total_costs": "Custos Totais",
+    "profit": "Lucro Líquido",
     "new_record": "+ Novo Registro",
     "net_balance": "Saldo Líquido",
     "total_revenue": "Receita Total",

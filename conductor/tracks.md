@@ -12,3 +12,4 @@
 - [appshell-fab-enhancements](tracks/appshell-fab-enhancements/index.md) - AppShell FAB Enhancements
 - [machinery-page-enhancements](tracks/machinery-page-enhancements/index.md) - MachineryPage Enhancements
 - [field-operations-module](tracks/field-operations-module/index.md) - Field Operations Module
+- [harvest-sales-module](tracks/harvest-sales-module/index.md) - Harvest and Sales Module
