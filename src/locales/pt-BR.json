@@ -41,47 +41,32 @@
     "expenses_description": "Insumos e Diesel"
   },
   "fields": {
-    "title": "Controle de Talhões",
+    "title": "Control de Talhões",
     "subtitle": "Gerencie suas áreas de plantio.",
-    "view_map": "Visualizar Mapa",
     "add_button": "Novo Talhão",
     "name": "Nome",
     "area": "Área (ha)",
-    "crop": "Cultura",
-    "status": "Status",
-    "active": "Ativo",
-    "inactive": "Inativo",
+    "soil_type": "Tipo de Solo",
+    "status": "Estado",
+    "active": "Em uso",
+    "inactive": "Livre",
     "no_data": "Nenhum talhão cadastrado.",
-    "form": {
-      "name": "Nome do Talhão",
-      "area": "Área em hectares",
-      "soil_type": "Tipo de solo",
-      "coordinates": "Coordenadas GPS"
-    }
+    "add_title": "Adicionar Talhão"
   },
   "seasons": {
-    "title": "Controle de Safras",
+    "title": "Control de Safras",
     "subtitle": "Gerencie seus ciclos de produção.",
     "add_button": "Nova Safra",
     "add_title": "Adicionar Nova Safra",
     "name": "Nome",
-    "commodity": "Commodity",
-    "start": "Início",
-    "statusLabel": "Status",
-    "status": {
+    "period": "Período",
+    "status": "Status",
+    "status_options": {
       "planned": "Planejada",
       "active": "Ativa",
-      "harvested": "Colhida",
-      "closed": "Encerrada"
+      "completed": "Encerrada"
     },
-    "no_data": "Nenhuma safra cadastrada.",
-    "form": {
-      "name": "Nome da Safra",
-      "crop": "Cultura",
-      "start_date": "Data de Início",
-      "end_date": "Data de Término",
-      "status": "Status"
-    }
+    "no_data": "Nenhuma safra registrada."
   },
   "machinery": {
     "title": "Maquinário",
