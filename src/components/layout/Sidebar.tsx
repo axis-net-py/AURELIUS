@@ -14,7 +14,8 @@ import {
   Map,
   Brain,
   BarChart3,
-  Wallet
+  Wallet,
+  ClipboardList
 } from 'lucide-react'
 import { useAuthStore } from '@/store/useAuthStore'
 import { LanguageToggle } from './LanguageToggle'
@@ -26,6 +27,7 @@ const navigation = [
   { nameKey: 'seasons', href: '/seasons', icon: Sprout },
   { nameKey: 'machinery', href: '/machinery', icon: Truck },
   { nameKey: 'inventory', href: '/inventory', icon: Package },
+  { nameKey: 'operations', href: '/operations', icon: ClipboardList },
   { nameKey: 'finance', href: '/finance', icon: Wallet },
   { nameKey: 'ai_input', href: '/ai-input', icon: Brain },
   { nameKey: 'reports', href: '/reports', icon: BarChart3 },

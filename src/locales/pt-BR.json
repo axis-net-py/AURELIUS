@@ -5,6 +5,7 @@
     "seasons": "Safras",
     "machinery": "Maquinário",
     "inventory": "Estoque",
+    "operations": "Operações",
     "finance": "Financeiro",
     "expenses": "Despesas",
     "revenues": "Receitas",
@@ -112,6 +113,23 @@
       "fuel": "Combustível",
       "parts": "Peças",
       "other": "Outros"
+    }
+  },
+  "operations": {
+    "title": "Operações de Campo",
+    "subtitle": "Registro de atividades e uso de insumos.",
+    "new_entry": "+ Nova Operação",
+    "type": "Tipo de Operação",
+    "date": "Data",
+    "notes": "Observações",
+    "inputs": "Insumos Utilizados",
+    "input": "Insumo",
+    "quantity": "Quantidade",
+    "types": {
+      "planting": "Plantio",
+      "spraying": "Aplicação",
+      "fertilizing": "Adubação",
+      "harvesting": "Colheita"
     }
   },
   "finance": {
