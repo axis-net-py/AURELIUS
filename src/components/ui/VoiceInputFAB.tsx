@@ -8,9 +8,15 @@ export const VoiceInputFAB: React.FC = () => {
   const [isInputMode, setIsInputMode] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunks = useRef<Blob[]>([]);
+  const successSound = new Audio('/sounds/success.mp3');
+
+  const triggerHaptic = (pattern: number | number[]) => {
+    if (window.navigator.vibrate) window.navigator.vibrate(pattern);
+  };
 
   const startRecording = async () => {
     try {
+      triggerHaptic(50);
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
       mediaRecorderRef.current = mediaRecorder;
@@ -29,6 +35,7 @@ export const VoiceInputFAB: React.FC = () => {
 
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
+      triggerHaptic(100);
       mediaRecorderRef.current.stop();
       mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
       setIsRecording(false);
@@ -46,6 +53,7 @@ export const VoiceInputFAB: React.FC = () => {
         body: formData,
       });
       const data = await response.json();
+      successSound.play().catch(() => {});
       toast.success(`Entendido: ${data.message || 'Dados registrados com sucesso.'}`);
     } catch {
       toast.error("Erro ao processar áudio.");
@@ -63,11 +71,13 @@ export const VoiceInputFAB: React.FC = () => {
         className={cn(
           "fixed bottom-20 right-6 z-50 h-14 w-14 rounded-full shadow-2xl transition-all duration-300 flex items-center justify-center",
           isRecording 
-            ? "bg-[#C19A6B] animate-pulse ring-4 ring-[#C19A6B]/50" 
+            ? "bg-[#C19A6B] ring-4 ring-[#C19A6B]/50" 
             : "bg-[#1B4332] hover:bg-[#1B4332]/90"
         )}
       >
-        {isRecording ? <Activity className="text-white animate-bounce" /> : <Sparkles className="text-white" />}
+        <div className={cn("relative flex items-center justify-center", isRecording && "animate-[ping_1.5s_ease-in-out_infinite]")}>
+           {isRecording ? <Activity className="text-white" /> : <Sparkles className="text-white" />}
+        </div>
       </button>
 
       {isInputMode && (
