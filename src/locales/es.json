@@ -160,6 +160,13 @@
       "irrigation": "Irrigación",
       "transport": "Transporte",
       "other": "Otros"
+    },
+    "commodities": {
+      "soy": "Soja",
+      "corn": "Maíz",
+      "wheat": "Trigo",
+      "cotton": "Algodón",
+      "other": "Otros"
     }
   },
   "reports": {

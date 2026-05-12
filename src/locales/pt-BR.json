@@ -96,7 +96,7 @@
     "identifier": "Identificador / Placa",
     "current_hours": "Horas Atuais",
     "maintenance": "Manutenção",
-    "fuel": "Combustível",
+    "fuel": "Combustible",
     "no_data": "Nenhum equipamento cadastrado.",
     "types": {
       "tractor": "Trator",
@@ -122,8 +122,8 @@
     "no_data": "Nenhum item em estoque.",
     "categories": {
       "seeds": "Sementes",
-      "fertilizers": "Fertilizantes",
-      "pesticides": "Defensivos",
+      "fertilizer": "Fertilizante",
+      "pesticide": "Defensivo",
       "fuel": "Combustível",
       "parts": "Peças",
       "other": "Outros"
@@ -143,6 +143,7 @@
     "buyer": "Comprador",
     "notes": "Observações",
     "receipt": "Comprovante",
+    "invoice": "Nota Fiscal",
     "payment_method": "Forma de Pagamento",
     "season": "Safra",
     "field": "Talhão",
@@ -152,13 +153,18 @@
     "no_revenues": "Nenhuma receita cadastrada.",
     "categories": {
       "seeds": "Sementes",
-      "fertilizers": "Fertilizantes",
-      "pesticides": "Defensivos",
+      "fertilizer": "Fertilizante",
+      "pesticide": "Defensivo",
       "fuel": "Combustível",
       "maintenance": "Manutenção",
       "labor": "Mão de Obra",
-      "irrigation": "Irrigação",
-      "transport": "Transporte",
+      "other": "Outros"
+    },
+    "commodities": {
+      "soy": "Soja",
+      "corn": "Milho",
+      "wheat": "Trigo",
+      "cotton": "Algodão",
       "other": "Outros"
     }
   },
