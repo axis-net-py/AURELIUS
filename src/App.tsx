@@ -10,6 +10,9 @@ import { MachineryPage } from '@/app/machinery/MachineryPage'
 import { InventoryPage } from '@/app/inventory/InventoryPage'
 import { ReportsPage } from '@/app/reports/ReportsPage'
 import { FieldsPage } from '@/app/fields/FieldsPage'
+import { FinancePage } from '@/app/finance/FinancePage'
+import { SettingsPage } from '@/app/settings/SettingsPage'
+import { AIInputPage } from '@/app/ai-input/AIInputPage'
 
 function App() {
   const { user, isLoading } = useAuthStore()
@@ -42,6 +45,9 @@ function App() {
         <Route path="/machinery" element={<MachineryPage />} />
         <Route path="/inventory" element={<InventoryPage />} />
         <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/finance" element={<FinancePage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/ai-input" element={<AIInputPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Routes>
