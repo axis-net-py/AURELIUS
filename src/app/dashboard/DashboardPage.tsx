@@ -137,7 +137,7 @@ export const DashboardPage: React.FC = () => {
                 <Tooltip 
                   cursor={{ fill: '#f8fafc' }}
                   contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
-                  formatter={(value: number) => [formatCurrency(value, currency), '']}
+                  formatter={(value: any) => [value != null ? formatCurrency(Number(value), currency) : '', '']}
                 />
                 <Bar dataKey="revenue" fill="#1B4332" radius={[4, 4, 0, 0]} name={t('nav.revenues')} />
                 <Bar dataKey="expenses" fill="#D97706" radius={[4, 4, 0, 0]} name={t('nav.expenses')} />
@@ -164,7 +164,7 @@ export const DashboardPage: React.FC = () => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value: number) => [formatCurrency(value, currency), '']} />
+                <Tooltip formatter={(value: any) => [value != null ? formatCurrency(Number(value), currency) : '', '']} />
               </PieChart>
             </ResponsiveContainer>
           </div>
