@@ -35,8 +35,9 @@
   --radius-input: 8px;
   --radius-button: 9999px;
   --radius-pill: 9999px;
-}
-
+  --color-surface-container: #f8fafc;
+  --color-surface-container-high: #ffffff;
+  }
 :root {
   --color-background: #ffffff;
   --color-foreground: #20252a;
