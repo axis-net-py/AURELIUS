@@ -11,3 +11,4 @@
 - [settings-page-enhancements](tracks/settings-page-enhancements/index.md) - SettingsPage Enhancements
 - [appshell-fab-enhancements](tracks/appshell-fab-enhancements/index.md) - AppShell FAB Enhancements
 - [machinery-page-enhancements](tracks/machinery-page-enhancements/index.md) - MachineryPage Enhancements
+- [field-operations-module](tracks/field-operations-module/index.md) - Field Operations Module

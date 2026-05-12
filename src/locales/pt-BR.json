@@ -6,6 +6,7 @@
     "machinery": "Maquinário",
     "inventory": "Estoque",
     "operations": "Operações",
+    "harvest": "Colheita",
     "finance": "Financeiro",
     "expenses": "Despesas",
     "revenues": "Receitas",
@@ -131,6 +132,16 @@
       "fertilizing": "Adubação",
       "harvesting": "Colheita"
     }
+  },
+  "harvest": {
+    "title": "Colheita e Comercialização",
+    "subtitle": "Gestão de produtividade e contratos.",
+    "tabs": {
+        "records": "Registros de Colheita",
+        "sales": "Contratos de Venda"
+    },
+    "yield": "Produtividade",
+    "gross_revenue": "Receita Bruta Projetada"
   },
   "finance": {
     "title": "Financeiro",

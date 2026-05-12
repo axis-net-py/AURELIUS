@@ -9,6 +9,7 @@ import { SeasonsPage } from '@/app/seasons/SeasonsPage'
 import { MachineryPage } from '@/app/machinery/MachineryPage'
 import { InventoryPage } from '@/app/inventory/InventoryPage'
 import { OperationsPage } from '@/app/operations/OperationsPage'
+import { HarvestPage } from '@/app/harvest/HarvestPage'
 import { ReportsPage } from '@/app/reports/ReportsPage'
 import { FieldsPage } from '@/app/fields/FieldsPage'
 import { FinancePage } from '@/app/finance/FinancePage'
@@ -46,6 +47,7 @@ function App() {
         <Route path="/machinery" element={<MachineryPage />} />
         <Route path="/inventory" element={<InventoryPage />} />
         <Route path="/operations" element={<OperationsPage />} />
+        <Route path="/harvest" element={<HarvestPage />} />
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/finance" element={<FinancePage />} />
         <Route path="/settings" element={<SettingsPage />} />
