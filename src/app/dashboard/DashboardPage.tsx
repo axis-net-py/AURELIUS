@@ -24,6 +24,9 @@ import {
 } from 'recharts'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useCurrencyStore } from '@/store/useCurrencyStore'
+import { formatCurrency } from '@/lib/currency'
+import { CurrencySelector } from '@/components/ui/CurrencySelector'
 
 const data = [
   { name: 'Jan', revenue: 4000, expenses: 2400 },
@@ -33,17 +36,11 @@ const data = [
   { name: 'Mai', revenue: 1890, expenses: 4800 },
 ]
 
-const categoryData = [
-  { name: 'Sementes', value: 400, color: '#1B4332' },
-  { name: 'Combustível', value: 300, color: '#2D6A4F' },
-  { name: 'Insumos', value: 300, color: '#D97706' },
-  { name: 'Manutenção', value: 200, color: '#B45309' },
-]
-
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [isNewRecordOpen, setIsNewRecordOpen] = useState(false)
+  const { currency } = useCurrencyStore()
   const farmName = "Fazenda Boa Vista"
 
   const categoryData = [
@@ -61,6 +58,7 @@ export const DashboardPage: React.FC = () => {
           <p className="text-muted-foreground">{t('dashboard.subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
+          <CurrencySelector />
           <Button variant="outline" size="sm" className="hidden sm:flex">
             {t('nav.seasons')} 2025/2026
           </Button>
@@ -93,19 +91,19 @@ export const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard 
           title={t('dashboard.net_balance')}
-          value="R$ 142.500,00" 
+          value={formatCurrency(142500, currency)} 
           icon={DollarSign}
           trend={{ value: '12%', positive: true }}
         />
         <KPICard 
           title={t('dashboard.total_revenue')}
-          value="R$ 280.000,00" 
+          value={formatCurrency(280000, currency)} 
           icon={TrendingUp}
           description={t('dashboard.revenue_description')}
         />
         <KPICard 
           title={t('dashboard.total_expenses')}
-          value="R$ 137.500,00" 
+          value={formatCurrency(137500, currency)} 
           icon={TrendingDown}
           description={t('dashboard.expenses_description')}
         />
@@ -134,11 +132,12 @@ export const DashboardPage: React.FC = () => {
                   axisLine={false} 
                   tickLine={false} 
                   tick={{ fill: '#64748b', fontSize: 12 }}
-                  tickFormatter={(value) => `R$ ${value}`}
+                  tickFormatter={(value) => formatCurrency(value, currency)}
                 />
                 <Tooltip 
                   cursor={{ fill: '#f8fafc' }}
                   contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}
+                  formatter={(value: number) => [formatCurrency(value, currency), '']}
                 />
                 <Bar dataKey="revenue" fill="#1B4332" radius={[4, 4, 0, 0]} name={t('nav.revenues')} />
                 <Bar dataKey="expenses" fill="#D97706" radius={[4, 4, 0, 0]} name={t('nav.expenses')} />
@@ -165,7 +164,7 @@ export const DashboardPage: React.FC = () => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip formatter={(value: number) => [formatCurrency(value, currency), '']} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -176,7 +175,7 @@ export const DashboardPage: React.FC = () => {
                   <div className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }} />
                   <span className="text-muted-foreground">{item.name}</span>
                 </div>
-                <span className="font-medium">R$ {item.value},00</span>
+                <span className="font-medium">{formatCurrency(item.value, currency)}</span>
               </div>
             ))}
           </div>

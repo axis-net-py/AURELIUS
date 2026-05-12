@@ -19,24 +19,29 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { NewRevenueForm } from './components/NewRevenueForm'
+import { useCurrencyStore } from '@/store/useCurrencyStore'
+import { formatCurrency } from '@/lib/currency'
+import { CurrencySelector } from '@/components/ui/CurrencySelector'
 
 const mockRevenues = [
-  { id: '1', date: '2026-05-09', amount: 'R$ 180.000,00', commodity: 'Soja', buyer: 'Cargill Agrícola', qty: '120 ton' },
-  { id: '2', date: '2026-05-06', amount: 'R$ 65.000,00', commodity: 'Milho', buyer: 'Bunge Alimentos', qty: '80 ton' },
-  { id: '3', date: '2026-05-01', amount: 'R$ 35.000,00', commodity: 'Trigo', buyer: 'Moinho Real', qty: '40 ton' },
+  { id: '1', date: '2026-05-09', amountBRL: 180000, commodity: 'Soja', buyer: 'Cargill Agrícola', qty: '120 ton' },
+  { id: '2', date: '2026-05-06', amountBRL: 65000, commodity: 'Milho', buyer: 'Bunge Alimentos', qty: '80 ton' },
+  { id: '3', date: '2026-05-01', amountBRL: 35000, commodity: 'Trigo', buyer: 'Moinho Real', qty: '40 ton' },
 ]
 
 export const RevenuePage: React.FC = () => {
   const [open, setOpen] = useState(false)
+  const { currency } = useCurrencyStore()
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-3xl font-heading font-bold text-foreground">Controle de Receitas</h1>
           <p className="text-muted-foreground">Monitore o faturamento e vendas da sua produção.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <CurrencySelector />
           <Button variant="outline" size="sm">
             <FileDown className="mr-2 h-4 w-4" /> Exportar
           </Button>
@@ -90,7 +95,7 @@ export const RevenuePage: React.FC = () => {
                 </TableCell>
                 <TableCell>{revenue.qty}</TableCell>
                 <TableCell className="text-muted-foreground">{revenue.buyer}</TableCell>
-                <TableCell className="text-right font-bold text-foreground">{revenue.amount}</TableCell>
+                <TableCell className="text-right font-bold text-foreground">{formatCurrency(revenue.amountBRL, currency)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

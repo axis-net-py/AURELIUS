@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import { 
   Table, 
   TableBody, 
@@ -19,10 +19,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { NewExpenseForm } from './components/NewExpenseForm'
-import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
-
-const USD_RATE = 5.5
+import { useCurrencyStore } from '@/store/useCurrencyStore'
+import { formatCurrency } from '@/lib/currency'
+import { CurrencySelector } from '@/components/ui/CurrencySelector'
 
 const mockExpenses = [
   { id: '1', date: '2026-05-08', amountBRL: 12400, category: 'Sementes', supplier: 'AgroSeeds Ltda', field: 'Talhão Norte' },
@@ -33,27 +32,17 @@ const mockExpenses = [
 
 export const ExpensePage: React.FC = () => {
   const [open, setOpen] = useState(false)
-  const [isUSD, setIsUSD] = useState(false)
-
-  const formatCurrency = (value: number) => {
-    if (isUSD) {
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value / USD_RATE)
-    }
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-  }
+  const { currency } = useCurrencyStore()
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-3xl font-heading font-bold text-foreground">Controle de Despesas</h1>
           <p className="text-muted-foreground">Gerencie todos os custos da sua produção.</p>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center space-x-2">
-            <Label htmlFor="currency-toggle" className="text-xs font-bold uppercase tracking-wider">{isUSD ? 'USD' : 'BRL'}</Label>
-            <Switch id="currency-toggle" checked={isUSD} onCheckedChange={setIsUSD} />
-          </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <CurrencySelector />
           <Button variant="outline" size="sm">
             <FileDown className="mr-2 h-4 w-4" /> Exportar
           </Button>
@@ -107,7 +96,7 @@ export const ExpensePage: React.FC = () => {
                 </TableCell>
                 <TableCell>{expense.supplier}</TableCell>
                 <TableCell className="text-muted-foreground">{expense.field}</TableCell>
-                <TableCell className="text-right font-bold text-foreground">{formatCurrency(expense.amountBRL)}</TableCell>
+                <TableCell className="text-right font-bold text-foreground">{formatCurrency(expense.amountBRL, currency)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
