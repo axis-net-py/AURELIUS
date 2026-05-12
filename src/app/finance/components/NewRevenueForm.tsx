@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { useCurrencyStore } from '@/store/useCurrencyStore'
 import { CURRENCY_CONFIG, type Currency, EXCHANGE_RATES } from '@/lib/currency'
 import { toast } from 'sonner'
+import { supabase } from '@/lib/supabase'
 
 const revenueSchema = z.object({
   date: z.string(),
@@ -50,8 +51,6 @@ export const NewRevenueForm: React.FC<NewRevenueFormProps> = ({ onSuccess }) => 
   const onSubmit = async (data: RevenueFormValues) => {
     setIsLoading(true)
     try {
-      const { supabase } = await import('@/lib/supabase')
-
       // Convert amount to BRL for storage
       const amountBRL = selectedCurrency === 'BRL'
         ? parseFloat(data.amount)
