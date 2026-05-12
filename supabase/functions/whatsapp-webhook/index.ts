@@ -1,4 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@0.1.0";
+
+const genAI = new GoogleGenerativeAI(Deno.env.get("AI_API_KEY")!);
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -11,11 +14,24 @@ serve(async (req) => {
   }
 
   const payload = await req.json();
-  console.log("Payload:", payload);
+  const text = payload.type === 'audio' ? await transcribeAudio(payload.audio_url) : payload.text;
 
-  // Here would be the logic for LLM processing or audio transcription
-  // We'll return a 200 OK for now to acknowledge receipt
-  return new Response(JSON.stringify({ status: "received" }), {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const prompt = `Você é o assistente técnico do Aurelius. Extraia dados estruturados (JSON) de mensagens sobre gastos, colheita e abastecimento do agronegócio (PT/ES).
+  Retorne um JSON com a ação (insert ou upsert), a tabela alvo (fuel_logs, harvest_logs, etc.) e os dados. Se for uma correção, use upsert.
+  Mensagem: ${text}`;
+
+  const result = await model.generateContent(prompt);
+  const jsonResponse = JSON.parse(result.response.text());
+
+  // Logic to insert/update into Supabase using admin client would go here
+  
+  return new Response(JSON.stringify({ status: "processed", data: jsonResponse }), {
     headers: { "Content-Type": "application/json" },
   });
 });
+
+async function transcribeAudio(url: string) {
+  // Mock transcription logic
+  return "Abasteci 150L no Trator 02 agora";
+}

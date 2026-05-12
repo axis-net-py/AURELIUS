@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/lib/supabase';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface AIInput {
   id: string;
@@ -17,25 +18,35 @@ export const AIInputPage: React.FC = () => {
   const { t } = useTranslation();
   const [logs, setLogs] = useState<AIInput[]>([]);
 
+  const fetchLogs = async () => {
+    const { data } = await supabase
+      .from('ai_inputs')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (data) setLogs(data);
+  };
+
   useEffect(() => {
-    const fetchLogs = async () => {
-      const { data } = await supabase
-        .from('ai_inputs')
-        .select('*')
-        .order('created_at', { ascending: false });
-      if (data) setLogs(data);
-    };
     fetchLogs();
   }, []);
+
+  const syncNow = async () => {
+    await fetchLogs();
+    toast.success("Dados sincronizados com sucesso!");
+  };
 
   const approve = async (id: string) => {
     await supabase.from('ai_inputs').update({ status: 'processed' }).eq('id', id);
     setLogs(logs.map(l => l.id === id ? { ...l, status: 'processed' } : l));
+    toast.success("Valor extraído e confirmado!");
   };
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">{t('ai_input.title')}</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">{t('ai_input.title')}</h1>
+        <Button onClick={syncNow}>Sync Now</Button>
+      </div>
       <Card>
         <CardHeader><CardTitle>{t('ai_input.recent_logs')}</CardTitle></CardHeader>
         <CardContent>
