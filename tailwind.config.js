@@ -29,6 +29,11 @@ export default {
         'surface-container-high': 'var(--color-surface-container-high)',
         'surface-inverse': 'var(--color-surface-inverse)',
         'surface-inverse-foreground': 'var(--color-surface-inverse-foreground)',
+        popover: 'var(--color-popover)',
+        'popover-foreground': 'var(--color-popover-foreground)',
+        input: 'var(--color-input)',
+        destructive: 'var(--color-destructive)',
+        'destructive-foreground': 'var(--color-destructive-foreground)',
       },
       borderRadius: {
         card: '16px',

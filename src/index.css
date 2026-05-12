@@ -37,6 +37,11 @@
   --color-foreground: #20252a;
   --color-card: #f4f6f8;
   --color-card-foreground: #20252a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #20252a;
+  --color-input: #d5dee8;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
   --color-primary: #00a868;
   --color-primary-foreground: #ffffff;
   --color-secondary: #f4f4f5;
@@ -58,6 +63,11 @@
   --color-foreground: #e8f0eb;
   --color-card: #1a2e22;
   --color-card-foreground: #e8f0eb;
+  --color-popover: #1a2e22;
+  --color-popover-foreground: #e8f0eb;
+  --color-input: #2d4a38;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
   --color-primary: #00a868;
   --color-primary-foreground: #ffffff;
   --color-secondary: #1e3028;
