@@ -142,6 +142,7 @@
     "supplier": "Proveedor",
     "buyer": "Comprador",
     "notes": "Observaciones",
+    "receipt": "Comprobante",
     "payment_method": "Método de Pago",
     "season": "Campaña",
     "field": "Lote",
@@ -206,6 +207,7 @@
     "deleted": "¡Eliminado con éxito!",
     "confirm_delete": "¿Está seguro que desea eliminar?",
     "required_field": "Campo obligatorio",
-    "optional": "opcional"
+    "optional": "opcional",
+    "attach_photo": "Tomar foto o adjuntar"
   }
 }

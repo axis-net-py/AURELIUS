@@ -142,6 +142,7 @@
     "supplier": "Fornecedor",
     "buyer": "Comprador",
     "notes": "Observações",
+    "receipt": "Comprovante",
     "payment_method": "Forma de Pagamento",
     "season": "Safra",
     "field": "Talhão",
@@ -206,6 +207,7 @@
     "deleted": "Excluído com sucesso!",
     "confirm_delete": "Tem certeza que deseja excluir?",
     "required_field": "Campo obrigatório",
-    "optional": "opcional"
+    "optional": "opcional",
+    "attach_photo": "Tirar foto ou anexar"
   }
 }
