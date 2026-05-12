@@ -2,10 +2,10 @@
 
 ## Overview
 
-- **Status**: Active
+- **Status**: Completed
 - **Spec**: [spec.md](spec.md)
 - **Plan**: [plan.md](plan.md)
 
 ## Summary
 
-Refactoring dynamic Supabase imports to static ones in finance forms for improved performance and consistency.
+Successfully refactored dynamic Supabase imports to static ones in `NewExpenseForm.tsx` and `NewRevenueForm.tsx`. Verified with a successful build and committed changes.
