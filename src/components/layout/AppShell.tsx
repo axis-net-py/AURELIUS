@@ -5,8 +5,7 @@ import { BottomNav } from './BottomNav'
 import { ThemeToggle } from './ThemeToggle'
 import { LanguageToggle } from './LanguageToggle'
 import { AIInputModal } from '../ai/AIInputModal'
-import { Button } from '../ui/button'
-import { Sparkles } from 'lucide-react'
+import { VoiceInputFAB } from '../ui/VoiceInputFAB'
 
 export const AppShell: React.FC = () => {
   const [isAIModalOpen, setIsAIModalOpen] = useState(false)
@@ -30,14 +29,7 @@ export const AppShell: React.FC = () => {
         </main>
       </div>
 
-      {/* Floating Action Button for Mobile AI Input */}
-      <Button
-        className="fixed bottom-20 right-4 lg:bottom-8 lg:right-8 h-14 w-14 rounded-full shadow-2xl shadow-primary/30 z-40 bg-primary text-primary-foreground p-0"
-        onClick={() => setIsAIModalOpen(true)}
-      >
-        <Sparkles className="h-6 w-6" />
-      </Button>
-
+      <VoiceInputFAB />
       <BottomNav />
       <AIInputModal open={isAIModalOpen} onOpenChange={setIsAIModalOpen} />
     </div>
