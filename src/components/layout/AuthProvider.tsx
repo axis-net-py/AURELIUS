@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import { useAuthStore } from '@/store/useAuthStore'
 
 
@@ -9,8 +9,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { setUser, setSession, setLoading } = useAuthStore()
 
   useEffect(() => {
+    // Demo mode - no Supabase configured
+    if (!isSupabaseConfigured()) {
+      setLoading(false)
+      return
+    }
+
     // Check initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase?.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       if (session?.user) {
         fetchUserProfile(session.user.id)
@@ -20,7 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase?.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       if (session?.user) {
         fetchUserProfile(session.user.id)
@@ -28,17 +34,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(null)
         setLoading(false)
       }
-    })
+    }) || { unsubscribe: () => {} }
 
     return () => {
-      subscription.unsubscribe()
+      subscription?.unsubscribe()
     }
   }, [])
 
   const fetchUserProfile = async (userId: string) => {
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
     try {
-      // In a real app, you'd fetch from your 'user_roles' and 'profiles' table
-      // For Phase 1, we'll mock the role as 'owner' if user exists
       const { data, error } = await supabase
         .from('user_roles')
         .select('role, farm_id')
@@ -47,7 +55,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('Error fetching profile:', error)
-        // Default to owner for first user or debugging
         setUser({ id: userId, email: '', role: 'owner', farm_id: null })
       } else {
         setUser({ id: userId, email: '', role: data.role, farm_id: data.farm_id })
