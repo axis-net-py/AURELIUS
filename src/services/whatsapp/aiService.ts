@@ -1,10 +1,12 @@
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import axios from 'axios';
 import FormData from 'form-data';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 const SYSTEM_PROMPT = `You are an agricultural data assistant for a Brazilian farm management system.
 Your job is to extract structured data from natural language messages (in Portuguese) sent by farm operators via WhatsApp.
@@ -45,6 +47,29 @@ Rules:
 - All monetary values in BRL (Brazilian Real).
 - Quantities in metric system (tons, kg, liters, hectares).
 - If the message is ambiguous or missing critical fields, return UNKNOWN.`;
+
+export async function analyzeImage(imageUrl: string): Promise<{ diagnosis: string }> {
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
+  const response = await axios.get(imageUrl, { 
+    headers: { Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}` },
+    responseType: 'arraybuffer' 
+  });
+  const base64Image = Buffer.from(response.data).toString('base64');
+
+  const result = await model.generateContent([
+    "Você é um agrônomo especialista. Identifique pragas, doenças ou deficiências na imagem e sugira ações imediatas de manejo.",
+    {
+      inlineData: {
+        data: base64Image,
+        mimeType: 'image/jpeg',
+      },
+    },
+  ]);
+
+  const text = result.response.text();
+  return { diagnosis: text };
+}
 
 export async function transcribeAudio(mediaUrl: string): Promise<string> {
   const response = await axios.get(mediaUrl, { 

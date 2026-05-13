@@ -1,17 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { KPICard } from '@/components/dashboard/KPICard'
 import { 
-  TrendingUp, 
-  TrendingDown, 
   DollarSign, 
-  Sprout,
-  Plus,
-  Receipt,
   Activity,
   Target,
-  Fuel,
-  Gauge,
-  Zap
+  Plus
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -27,20 +20,26 @@ import {
 } from 'recharts'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import { ReportPDF } from '@/components/reports/ReportPDF';
 import { useCurrencyStore } from '@/store/useCurrencyStore'
 import { formatCurrency } from '@/lib/currency'
 
-
-const data = [
-  { name: 'Jan', revenue: 4000, costs: 2400 },
-  { name: 'Fev', revenue: 3000, costs: 1398 },
-  { name: 'Mar', revenue: 2000, costs: 980 },
-  { name: 'Abr', revenue: 2780, costs: 390 },
-  { name: 'Mai', revenue: 1890, costs: 480 },
-  { name: 'Jun', revenue: 3500, costs: 1200 },
-]
+// Minimal Gauge Component
+const TelemetryGauge = ({ label, value, max, unit }: { label: string, value: number, max: number, unit: string }) => {
+  const percentage = Math.min((value / max) * 100, 100);
+  return (
+    <div className="flex flex-col items-center">
+      <div className="relative w-24 h-12 overflow-hidden">
+        <div className="absolute top-0 left-0 w-24 h-24 rounded-full border-8 border-gray-200" />
+        <div 
+          className="absolute top-0 left-0 w-24 h-24 rounded-full border-8 border-[#C19A6B]" 
+          style={{ clipPath: `conic-gradient(from 180deg, #C19A6B ${percentage}%, transparent 0)` }}
+        />
+      </div>
+      <span className="text-xl font-bold mt-2">{value} <span className="text-xs text-muted-foreground">{unit}</span></span>
+      <span className="text-xs text-muted-foreground">{label}</span>
+    </div>
+  );
+};
 
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation()
@@ -48,89 +47,21 @@ export const DashboardPage: React.FC = () => {
   const { currency } = useCurrencyStore()
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-heading font-bold text-foreground">War Room</h1>
-          <p className="text-muted-foreground">{t('dashboard.subtitle')}</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Select defaultValue="2025/2026">
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={t('reports.filter_season')} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="2025/2026">Safra 2025/2026</SelectItem>
-              <SelectItem value="2024/2025">Safra 2024/2025</SelectItem>
-            </SelectContent>
-          </Select>
-          <PDFDownloadLink document={<ReportPDF data={{roi: 12, netProfit: '142.500', yield: '12.4'}} />} fileName="relatorio_safra.pdf">
-            {({ loading }) => (
-              <Button className="rounded-full bg-[#C19A6B] hover:bg-[#C19A6B]/90 text-white">
-                {loading ? t('common.loading') : 'Exportar Relatório'}
-              </Button>
-            )}
-          </PDFDownloadLink>
-          <Button className="rounded-full" onClick={() => navigate('/revenues')}>
-            <Plus className="mr-2 h-4 w-4" /> {t('dashboard.new_record')}
-          </Button>
-        </div>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold text-foreground">War Room</h1>
+        <Button onClick={() => navigate('/scouting')}>Ver Scouting</Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <KPICard title={t('dashboard.net_profit')} value={formatCurrency(142500, currency)} icon={DollarSign} />
-        <KPICard title={t('dashboard.efficiency_ratio')} value="12.4" icon={Activity} description="Sacas / Litro" />
-        <KPICard title={t('dashboard.cost_per_ha')} value={formatCurrency(450, currency)} icon={Target} />
-        <Card className="flex flex-col items-center justify-center p-6 bg-card border-2 border-primary/20">
-          <h3 className="text-sm font-medium text-muted-foreground mb-2">Farm Health Score</h3>
-          <div className="text-4xl font-bold text-[#1B4332] dark:text-[#C19A6B]">88</div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="p-6 col-span-3">
+          <h3 className="text-lg font-bold mb-6">Live Telemetry</h3>
+          <div className="flex justify-around">
+            <TelemetryGauge label="Fuel Rate" value={42} max={100} unit="L/h" />
+            <TelemetryGauge label="Speed" value={8} max={20} unit="km/h" />
+            <TelemetryGauge label="Engine Load" value={78} max={100} unit="%" />
+          </div>
         </Card>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-card rounded-[2.5rem] border border-border p-8 shadow-sm">
-            <h3 className="text-lg font-heading font-bold mb-6">Receita vs Custos</h3>
-            <div className="w-full h-80">
-            <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data}>
-                <defs>
-                    <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1B4332" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#1B4332" stopOpacity={0}/>
-                    </linearGradient>
-                    <linearGradient id="colorCosts" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#C19A6B" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#C19A6B" stopOpacity={0}/>
-                    </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                <YAxis axisLine={false} tickLine={false} tickFormatter={(val) => formatCurrency(val, currency)} />
-                <Tooltip />
-                <Area type="monotone" dataKey="revenue" stroke="#1B4332" fillOpacity={1} fill="url(#colorRevenue)" />
-                <Area type="monotone" dataKey="costs" stroke="#C19A6B" fillOpacity={1} fill="url(#colorCosts)" />
-                </AreaChart>
-            </ResponsiveContainer>
-            </div>
-        </div>
-
-        <div className="bg-card rounded-[2.5rem] border border-border p-8 shadow-sm">
-            <h3 className="text-lg font-heading font-bold mb-6">Live Telemetry</h3>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2"><Fuel className="text-[#C19A6B]" /><span>Fuel Rate</span></div>
-                    <span className="font-bold">42 L/h</span>
-                </div>
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2"><Gauge className="text-[#C19A6B]" /><span>Engine Load</span></div>
-                    <span className="font-bold">78%</span>
-                </div>
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2"><Zap className="text-[#C19A6B]" /><span>Speed</span></div>
-                    <span className="font-bold">8.5 km/h</span>
-                </div>
-            </div>
-        </div>
       </div>
     </div>
   )

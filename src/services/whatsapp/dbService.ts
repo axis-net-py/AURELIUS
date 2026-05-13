@@ -5,6 +5,14 @@ const ZAPI_INSTANCE_ID = "3F2ED81A37CED1820941423ED5B98F9F";
 const ZAPI_TOKEN = "DAA35D3930BC743D7AA28836";
 const ZAPI_URL = `https://api.z-api.io/instances/${ZAPI_INSTANCE_ID}/token/${ZAPI_TOKEN}/send-text`;
 
+export async function saveFieldScouting(fieldId: string, imageUrl: string, diagnosis: string, confidence: number) {
+  const { error } = await supabase
+    .from('field_scouting')
+    .insert([{ field_id: fieldId, image_url: imageUrl, ai_diagnosis: diagnosis, confidence_level: confidence }]);
+  
+  return { error };
+}
+
 export async function handleWhatsAppAction(parsedData: any, phone: string, farmId: string) {
   if (parsedData.intent === 'unknown') {
     return await sendWhatsAppMessage(phone, "⚠️ Não entendi. Por favor, tente descrever com mais detalhes o valor e o produto.");
