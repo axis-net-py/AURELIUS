@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect } from 'react'
-import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/useAuthStore'
-
 
 const AuthContext = createContext({})
 
@@ -9,14 +8,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { setUser, setSession, setLoading } = useAuthStore()
 
   useEffect(() => {
-    // Demo mode - no Supabase configured
-    if (!isSupabaseConfigured()) {
+    // Demo mode - no valid Supabase credentials
+    if (!supabase) {
       setLoading(false)
       return
     }
 
     // Check initial session
-    supabase?.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       if (session?.user) {
         fetchUserProfile(session.user.id)
@@ -26,7 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase?.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       if (session?.user) {
         fetchUserProfile(session.user.id)
@@ -34,18 +33,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(null)
         setLoading(false)
       }
-    }) || { unsubscribe: () => {} }
+    })
 
     return () => {
-      subscription?.unsubscribe()
+      subscription.unsubscribe()
     }
   }, [])
 
   const fetchUserProfile = async (userId: string) => {
-    if (!supabase) {
-      setLoading(false)
-      return
-    }
     try {
       const { data, error } = await supabase
         .from('user_roles')

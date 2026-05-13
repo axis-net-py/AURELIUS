@@ -1,10 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-// Create client - will fail gracefully at runtime if credentials are invalid
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Only create client if valid credentials exist
+const hasValidCredentials = supabaseUrl?.includes('supabase') && supabaseAnonKey?.length > 50
 
-// Check if configured
-export const isSupabaseConfigured = () => !!(supabaseUrl && supabaseAnonKey)
+export const supabase = hasValidCredentials
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
+
+export const isSupabaseConfigured = () => hasValidCredentials
