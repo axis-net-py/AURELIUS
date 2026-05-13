@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "install-all": "cd agro-manager && npm install",
-    "build": "cd agro-manager && npm install && npm run build"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   }
 }
