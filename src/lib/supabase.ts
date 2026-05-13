@@ -1,16 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
 
-// For development/demo mode when env vars are missing
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Missing Supabase environment variables - running in demo mode')
-}
+// Create client - will fail gracefully at runtime if credentials are invalid
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null
-
-// Helper to check if supabase is available
-export const isSupabaseConfigured = () => !!supabase
+// Check if configured
+export const isSupabaseConfigured = () => !!(supabaseUrl && supabaseAnonKey)
