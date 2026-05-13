@@ -8,7 +8,10 @@ import {
   Plus,
   Receipt,
   Activity,
-  Target
+  Target,
+  Fuel,
+  Gauge,
+  Zap
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -84,29 +87,49 @@ export const DashboardPage: React.FC = () => {
         </Card>
       </div>
 
-      <div className="bg-card rounded-[2.5rem] border border-border p-8 shadow-sm">
-        <h3 className="text-lg font-heading font-bold mb-6">Receita vs Custos</h3>
-        <div className="w-full h-80">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data}>
-              <defs>
-                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#1B4332" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#1B4332" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="colorCosts" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#C19A6B" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#C19A6B" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} />
-              <YAxis axisLine={false} tickLine={false} tickFormatter={(val) => formatCurrency(val, currency)} />
-              <Tooltip />
-              <Area type="monotone" dataKey="revenue" stroke="#1B4332" fillOpacity={1} fill="url(#colorRevenue)" />
-              <Area type="monotone" dataKey="costs" stroke="#C19A6B" fillOpacity={1} fill="url(#colorCosts)" />
-            </AreaChart>
-          </ResponsiveContainer>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-card rounded-[2.5rem] border border-border p-8 shadow-sm">
+            <h3 className="text-lg font-heading font-bold mb-6">Receita vs Custos</h3>
+            <div className="w-full h-80">
+            <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={data}>
+                <defs>
+                    <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#1B4332" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#1B4332" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="colorCosts" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#C19A6B" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#C19A6B" stopOpacity={0}/>
+                    </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                <YAxis axisLine={false} tickLine={false} tickFormatter={(val) => formatCurrency(val, currency)} />
+                <Tooltip />
+                <Area type="monotone" dataKey="revenue" stroke="#1B4332" fillOpacity={1} fill="url(#colorRevenue)" />
+                <Area type="monotone" dataKey="costs" stroke="#C19A6B" fillOpacity={1} fill="url(#colorCosts)" />
+                </AreaChart>
+            </ResponsiveContainer>
+            </div>
+        </div>
+
+        <div className="bg-card rounded-[2.5rem] border border-border p-8 shadow-sm">
+            <h3 className="text-lg font-heading font-bold mb-6">Live Telemetry</h3>
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2"><Fuel className="text-[#C19A6B]" /><span>Fuel Rate</span></div>
+                    <span className="font-bold">42 L/h</span>
+                </div>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2"><Gauge className="text-[#C19A6B]" /><span>Engine Load</span></div>
+                    <span className="font-bold">78%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2"><Zap className="text-[#C19A6B]" /><span>Speed</span></div>
+                    <span className="font-bold">8.5 km/h</span>
+                </div>
+            </div>
         </div>
       </div>
     </div>
