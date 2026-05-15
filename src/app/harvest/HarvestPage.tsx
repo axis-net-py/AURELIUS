@@ -1,43 +1,38 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Plus, Wheat, FileText } from 'lucide-react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Plus } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useTranslation } from 'react-i18next'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/useAuthStore'
-import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 
-const harvestSchema = z.object({
-  field_id: z.string().min(1),
-  crop_season_id: z.string().min(1),
-  quantity: z.number().min(0.01),
-  moisture: z.number().optional(),
-  storage_location: z.string().optional(),
-  date: z.string().min(1),
-})
+interface HarvestRecord {
+  id: string
+  date: string
+  quantity: number
+  storage_location: string | null
+  fields: { name: string, area_hectares: number } | null
+  crop_seasons: { name: string } | null
+}
 
 export const HarvestPage: React.FC = () => {
   const { t } = useTranslation()
   const { user } = useAuthStore()
-  const [isAddHarvestOpen, setIsAddHarvestOpen] = useState(false)
 
-  const { data: harvestRecords } = useQuery({
+  const { data: harvestRecords = [] } = useQuery<HarvestRecord[]>({
     queryKey: ['harvest', user?.farm_id],
     queryFn: async () => {
-      const { data } = await supabase.from('harvest_records').select('*, fields(name, area_hectares), crop_seasons(name)')
-      return data || []
-    }
+      if (!user?.farm_id) return []
+      const { data } = await supabase.from('harvest_records').select('*, fields(name, area_hectares), crop_seasons(name)').eq('farm_id', user.farm_id)
+      return (data as unknown as HarvestRecord[]) || []
+    },
+    enabled: !!user?.farm_id
   })
 
-  // Mock KPIs based on harvestRecords data
-  const totalHarvested = harvestRecords?.reduce((acc, curr) => acc + curr.quantity, 0) || 0
-  const avgYield = harvestRecords?.length ? (totalHarvested / harvestRecords.reduce((acc, curr) => acc + (curr.fields?.area_hectares || 1), 0)) : 0
+  const totalHarvested = harvestRecords.reduce((acc, curr) => acc + curr.quantity, 0)
+  const avgYield = harvestRecords.length ? (totalHarvested / harvestRecords.reduce((acc, curr) => acc + (curr.fields?.area_hectares || 1), 0)) : 0
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -59,14 +54,14 @@ export const HarvestPage: React.FC = () => {
         
         <TabsContent value="harvest" className="space-y-4 pt-4">
             <div className="flex justify-end">
-                <Button className="rounded-xl" onClick={() => setIsAddHarvestOpen(true)}>
+                <Button className="rounded-xl">
                     <Plus className="mr-2 h-4 w-4" /> Registrar Colheita
                 </Button>
             </div>
-            {harvestRecords?.map((h: any) => (
+            {harvestRecords.map((h: HarvestRecord) => (
                 <Card key={h.id} className="p-4 flex items-center justify-between">
                     <div>
-                        <p className="font-bold">{h.fields.name} - {h.crop_seasons.name}</p>
+                        <p className="font-bold">{h.fields?.name} - {h.crop_seasons?.name}</p>
                         <p className="text-sm text-muted-foreground">{h.date}</p>
                     </div>
                     <div className="text-right">

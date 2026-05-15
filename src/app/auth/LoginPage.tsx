@@ -33,8 +33,12 @@ export const LoginPage: React.FC = () => {
         password: data.password,
       })
       if (error) throw error
-    } catch (err: any) {
-      setError(err.message || "Erro ao fazer login")
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("Erro ao fazer login")
+      }
     } finally {
       setIsLoading(false)
     }

@@ -14,6 +14,9 @@ import {
 } from '@/components/ui/select'
 import { Loader2 } from 'lucide-react'
 
+import { supabase } from '@/lib/supabase'
+import { toast } from 'sonner'
+
 const inputSchema = z.object({
   product_name: z.string().min(1, "O nome do produto é obrigatório"),
   type: z.string().min(1, "O tipo é obrigatório"),
@@ -22,6 +25,7 @@ const inputSchema = z.object({
   total_qty: z.string().min(1, "Quantidade total é obrigatória"),
   total_cost: z.string().min(1, "Custo total é obrigatório"),
   applicator: z.string().optional(),
+  notes: z.string().optional(),
 })
 
 type InputFormValues = z.infer<typeof inputSchema>
@@ -36,10 +40,23 @@ export const NewInputForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess })
     }
   })
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: InputFormValues) => {
+    if (!supabase) return;
     setIsLoading(true)
-    // Simulate Supabase insert
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const { error } = await supabase
+      .from('inventory_movements')
+      .insert({
+        date: data.application_date,
+        type: 'exit',
+        quantity: parseFloat(data.total_qty),
+        notes: data.notes || null,
+      })
+    if (error) { 
+      toast.error('Erro ao salvar')
+      setIsLoading(false)
+      return 
+    }
+    toast.success('Aplicação registrada')
     setIsLoading(false)
     onSuccess()
   }

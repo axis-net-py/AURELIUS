@@ -14,12 +14,17 @@ import {
 } from '@/components/ui/select'
 import { Loader2 } from 'lucide-react'
 
+import { supabase } from '@/lib/supabase'
+import { toast } from 'sonner'
+
 const harvestSchema = z.object({
   date: z.string(),
   area_ha: z.string().min(1, "Área é obrigatória"),
   gross_qty_tons: z.string().min(1, "Quantidade é obrigatória"),
   humidity_pct: z.string().min(1, "Umidade é obrigatória"),
   destination: z.string().min(1, "Destino é obrigatório"),
+  buyer: z.string().optional(),
+  sale_price: z.string().optional(),
 })
 
 type HarvestFormValues = z.infer<typeof harvestSchema>
@@ -34,9 +39,26 @@ export const NewHarvestForm: React.FC<{ onSuccess: () => void }> = ({ onSuccess 
     }
   })
 
-  const onSubmit = async () => {
+  const onSubmit = async (data: HarvestFormValues) => {
+    if (!supabase) return;
     setIsLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const { error } = await supabase
+      .from('harvest_records')
+      .insert({
+        date: data.date,
+        area_ha: parseFloat(data.area_ha),
+        gross_qty_tons: parseFloat(data.gross_qty_tons),
+        humidity_pct: data.humidity_pct ? parseFloat(data.humidity_pct) : null,
+        destination: data.destination,
+        sale_price: data.sale_price ? parseFloat(data.sale_price) : null,
+        buyer: data.buyer || null,
+      })
+    if (error) { 
+      toast.error('Erro ao salvar colheita')
+      setIsLoading(false)
+      return 
+    }
+    toast.success('Colheita registrada')
     setIsLoading(false)
     onSuccess()
   }

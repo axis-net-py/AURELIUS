@@ -1,4 +1,4 @@
--- Financial Summary View
+-- Financial Summary View Enhanced
 CREATE OR REPLACE VIEW financial_summary AS
 WITH operation_costs AS (
   SELECT 
@@ -32,7 +32,11 @@ revenues AS (
 )
 SELECT 
   cs.id as crop_season_id,
+  cs.farm_id,
   cs.name as season_name,
+  COALESCE(oc.total_input_costs, 0) as input_costs,
+  COALESCE(mc.total_maintenance, 0) as maintenance_costs,
+  COALESCE(fc.total_fuel, 0) as fuel_costs,
   COALESCE(oc.total_input_costs, 0) + COALESCE(mc.total_maintenance, 0) + COALESCE(fc.total_fuel, 0) as total_costs,
   COALESCE(r.total_revenue, 0) as total_revenue,
   COALESCE(r.total_revenue, 0) - (COALESCE(oc.total_input_costs, 0) + COALESCE(mc.total_maintenance, 0) + COALESCE(fc.total_fuel, 0)) as profit

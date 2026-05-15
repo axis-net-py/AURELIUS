@@ -4,9 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { 
   LayoutDashboard, 
-  Receipt, 
-  TrendingUp, 
-  Sprout, 
   Truck, 
   Package, 
   Settings,

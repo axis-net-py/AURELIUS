@@ -12,6 +12,16 @@ import { useAuthStore } from '@/store/useAuthStore'
 import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
 
+interface InventoryItem {
+  id: string
+  name: string
+  category: string
+  unit: string
+  quantity: number
+  min_threshold: number
+  unit_cost?: number
+}
+
 const inventorySchema = z.object({
   name: z.string().min(1, 'Nome obrigatório'),
   category: z.enum(['seeds', 'fertilizers', 'pesticides', 'fuel', 'parts', 'other']),
@@ -28,11 +38,12 @@ export const InventoryPage: React.FC = () => {
   const { user } = useAuthStore()
   const [isAddItemOpen, setIsAddItemOpen] = useState(false)
 
-  const { data: inventory, refetch } = useQuery({
+  const { data: inventory = [], refetch } = useQuery<InventoryItem[]>({
     queryKey: ['inventory', user?.farm_id],
     queryFn: async () => {
-        const { data } = await supabase.from('inventory_items').select('*').eq('farm_id', user?.farm_id)
-        return data || []
+      if (!user?.farm_id) return []
+      const { data } = await supabase.from('inventory_items').select('*').eq('farm_id', user.farm_id)
+      return (data as unknown as InventoryItem[]) || []
     },
     enabled: !!user?.farm_id
   })
@@ -67,7 +78,7 @@ export const InventoryPage: React.FC = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <input {...form.register('name')} placeholder={t('inventory.name')} className="w-full border p-2 rounded" />
                 <select {...form.register('category')} className="w-full border p-2 rounded">
-                    {Object.keys(t('inventory.categories', { returnObjects: true }) as any).map((cat: string) => (
+                    {['seeds', 'fertilizers', 'pesticides', 'fuel', 'parts', 'other'].map((cat: string) => (
                         <option key={cat} value={cat}>{t(`inventory.categories.${cat}`)}</option>
                     ))}
                 </select>
@@ -78,36 +89,36 @@ export const InventoryPage: React.FC = () => {
       </Dialog>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {inventory?.map((item: any) => (
-          <Card key={item.id} className="rounded-3xl border-slate-200/50 shadow-sm relative">
-            {item.quantity < item.min_threshold && (
-              <div className="absolute top-4 right-4 text-rose-500 animate-pulse">
-                <AlertCircle className="h-5 w-5" />
-              </div>
-            )}
-            <CardContent className="pt-6 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <Package className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg">{item.name}</h3>
-                  <p className="text-xs text-muted-foreground">{t(`inventory.categories.${item.category}`)}</p>
-                </div>
-              </div>
-              <div className="flex items-end justify-between border-t border-border pt-4">
-                <div className="text-center">
-                  <p className="text-xs text-muted-foreground">{t('inventory.quantity')}</p>
-                  <p className="text-2xl font-bold">{item.quantity} <span className="text-sm font-normal">{item.unit}</span></p>
-                </div>
-                <div className="text-center">
-                  <p className="text-xs text-muted-foreground">{t('inventory.min_quantity')}</p>
-                  <p className="text-sm font-semibold">{item.min_threshold} {item.unit}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                {inventory.map((item: InventoryItem) => (
+                  <Card key={item.id} className="rounded-3xl border-slate-200/50 shadow-sm relative">
+                    {item.quantity < item.min_threshold && (
+                      <div className="absolute top-4 right-4 text-rose-500 animate-pulse">
+                        <AlertCircle className="h-5 w-5" />
+                      </div>
+                    )}
+                    <CardContent className="pt-6 space-y-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                          <Package className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-lg">{item.name}</h3>
+                          <p className="text-xs text-muted-foreground">{t(`inventory.categories.${item.category}`)}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-end justify-between border-t border-border pt-4">
+                        <div className="text-center">
+                          <p className="text-xs text-muted-foreground">{t('inventory.quantity')}</p>
+                          <p className="text-2xl font-bold">{item.quantity} <span className="text-sm font-normal">{item.unit}</span></p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-xs text-muted-foreground">{t('inventory.min_quantity')}</p>
+                          <p className="text-sm font-semibold">{item.min_threshold} {item.unit}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
       </div>
     </div>
   )

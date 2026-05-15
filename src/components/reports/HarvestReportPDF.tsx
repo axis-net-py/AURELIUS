@@ -10,7 +10,13 @@ const styles = StyleSheet.create({
   cell: { fontSize: 10, flex: 1 },
 });
 
-export const HarvestReportPDF: React.FC<{ data: any[] }> = ({ data }) => (
+interface HarvestItem {
+  name: string
+  quantity: number
+  revenue: number
+}
+
+export const HarvestReportPDF: React.FC<{ data: HarvestItem[] }> = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <Text style={styles.header}>Relatório de Colheita</Text>

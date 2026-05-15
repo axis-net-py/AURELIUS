@@ -18,8 +18,8 @@ export const BottomNav: React.FC = () => {
     { name: t('nav.dashboard'), href: '/', icon: LayoutDashboard },
     { name: t('nav.fields'), href: '/fields', icon: MapIcon },
     { name: t('nav.ai_input'), href: '/ai-input', icon: MessageSquare },
-    { name: t('nav.finance'), href: '/expenses', icon: CircleDollarSign },
-    { name: t('nav.settings'), href: '/reports', icon: Menu },
+    { name: t('nav.finance'), href: '/finance', icon: CircleDollarSign },
+    { name: t('nav.settings'), href: '/settings', icon: Menu },
   ]
 
   return (

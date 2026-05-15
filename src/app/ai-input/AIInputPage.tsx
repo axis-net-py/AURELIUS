@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/lib/supabase';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface AIInput {
   id: string;
@@ -16,29 +17,35 @@ interface AIInput {
 
 export const AIInputPage: React.FC = () => {
   const { t } = useTranslation();
-  const [logs, setLogs] = useState<AIInput[]>([]);
+  const queryClient = useQueryClient();
 
-  const fetchLogs = async () => {
-    const { data } = await supabase
-      .from('ai_inputs')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (data) setLogs(data);
-  };
+  const { data: logs = [], refetch } = useQuery({
+    queryKey: ['ai-inputs'],
+    queryFn: async () => {
+      if (!supabase) return [];
+      const { data } = await supabase
+        .from('ai_inputs')
+        .select('*')
+        .order('created_at', { ascending: false });
+      return (data as AIInput[]) || [];
+    }
+  });
 
-  useEffect(() => {
-    fetchLogs();
-  }, []);
+  const approveMutation = useMutation({
+    mutationFn: async (id: string) => {
+      if (!supabase) return;
+      const { error } = await supabase.from('ai_inputs').update({ status: 'processed' }).eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['ai-inputs'] });
+      toast.success("Valor extraído e confirmado!");
+    }
+  });
 
   const syncNow = async () => {
-    await fetchLogs();
+    await refetch();
     toast.success("Dados sincronizados com sucesso!");
-  };
-
-  const approve = async (id: string) => {
-    await supabase.from('ai_inputs').update({ status: 'processed' }).eq('id', id);
-    setLogs(logs.map(l => l.id === id ? { ...l, status: 'processed' } : l));
-    toast.success("Valor extraído e confirmado!");
   };
 
   return (
@@ -63,7 +70,13 @@ export const AIInputPage: React.FC = () => {
                   <div className="flex gap-2">
                     <Badge variant={log.status === 'pending' ? 'outline' : 'default'}>{log.status}</Badge>
                     {log.status === 'pending' && (
-                      <Button size="sm" onClick={() => approve(log.id)}>{t('actions.confirm')}</Button>
+                      <Button 
+                        size="sm" 
+                        onClick={() => approveMutation.mutate(log.id)}
+                        disabled={approveMutation.isPending}
+                      >
+                        {t('actions.confirm')}
+                      </Button>
                     )}
                   </div>
                 </div>

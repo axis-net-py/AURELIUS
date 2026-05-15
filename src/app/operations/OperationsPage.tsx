@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Plus, ClipboardList, Loader2, Trash2 } from 'lucide-react'
+import { Plus, Trash2 } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useTranslation } from 'react-i18next'
 import { useForm, useFieldArray } from 'react-hook-form'
@@ -30,36 +30,49 @@ const operationSchema = z.object({
 
 type FormData = z.infer<typeof operationSchema>
 
+interface Operation {
+  id: string
+  date: string
+  operation_type: 'Planting' | 'Spraying' | 'Fertilizing' | 'Harvesting'
+  fields: { name: string }
+  crop_seasons: { name: string }
+  machinery: { name: string }
+}
+
 export const OperationsPage: React.FC = () => {
   const { t } = useTranslation()
   const { user } = useAuthStore()
   const [isAddOpen, setIsAddOpen] = useState(false)
 
-  const { data: operations } = useQuery({
+  const { data: operations = [] } = useQuery<Operation[]>({
     queryKey: ['operations', user?.farm_id],
     queryFn: async () => {
-      const { data } = await supabase.from('field_operations').select('*, fields(name), crop_seasons(name), machinery(name)')
-      return data || []
-    }
+      if (!user?.farm_id) return []
+      const { data } = await supabase
+        .from('field_operations')
+        .select('*, fields(name), crop_seasons(name), machinery(name)')
+        .eq('farm_id', user.farm_id)
+      return (data as unknown as Operation[]) || []
+    },
+    enabled: !!user?.farm_id
   })
 
-  const { data: fields } = useQuery({ queryKey: ['fields'], queryFn: async () => (await supabase.from('fields').select('*')).data || [] })
-  const { data: seasons } = useQuery({ queryKey: ['seasons'], queryFn: async () => (await supabase.from('crop_seasons').select('*')).data || [] })
-  const { data: machinery } = useQuery({ queryKey: ['machinery'], queryFn: async () => (await supabase.from('machinery').select('*')).data || [] })
-  const { data: inventory } = useQuery({ queryKey: ['inventory'], queryFn: async () => (await supabase.from('inventory_items').select('*')).data || [] })
+  const { data: fields = [] } = useQuery({ queryKey: ['fields'], queryFn: async () => (await supabase.from('fields').select('*')).data || [] })
+  const { data: seasons = [] } = useQuery({ queryKey: ['seasons'], queryFn: async () => (await supabase.from('crop_seasons').select('*')).data || [] })
+  const { data: machinery = [] } = useQuery({ queryKey: ['machinery'], queryFn: async () => (await supabase.from('machinery').select('*')).data || [] })
+  const { data: inventory = [] } = useQuery({ queryKey: ['inventory'], queryFn: async () => (await supabase.from('inventory_items').select('*')).data || [] })
 
   const form = useForm<FormData>({ resolver: zodResolver(operationSchema), defaultValues: { inputs: [{ inventory_item_id: '', quantity_used: 0 }] } })
   const { fields: inputFields, append, remove } = useFieldArray({ control: form.control, name: 'inputs' })
 
   const onSubmit = async (data: FormData) => {
-    // 1. Insert Operation
+    if (!user?.farm_id) return
     const { data: op, error: opError } = await supabase.from('field_operations')
-      .insert({ ...data, farm_id: user?.farm_id }).select().single()
+      .insert({ ...data, farm_id: user.farm_id }).select().single()
     if (opError) { toast.error('Erro ao salvar operação'); return }
 
-    // 2. Insert Inputs (Trigger handles deduction)
     const inputs = data.inputs.map(input => {
-      const item = inventory?.find(i => i.id === input.inventory_item_id)
+      const item = inventory.find(i => i.id === input.inventory_item_id)
       return { 
         operation_id: op.id, 
         inventory_item_id: input.inventory_item_id, 
@@ -91,15 +104,15 @@ export const OperationsPage: React.FC = () => {
               <Select onValueChange={(v) => form.setValue('field_id', v)}><SelectTrigger><SelectValue placeholder="Talhão" /></SelectTrigger><SelectContent>{fields?.map(f => <SelectItem key={f.id} value={f.id}>{f.name}</SelectItem>)}</SelectContent></Select>
               <Select onValueChange={(v) => form.setValue('crop_season_id', v)}><SelectTrigger><SelectValue placeholder="Safra" /></SelectTrigger><SelectContent>{seasons?.map(s => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent></Select>
               <Select onValueChange={(v) => form.setValue('machinery_id', v)}><SelectTrigger><SelectValue placeholder="Maquinário" /></SelectTrigger><SelectContent>{machinery?.map(m => <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>)}</SelectContent></Select>
-              <Select onValueChange={(v: any) => form.setValue('operation_type', v)}><SelectTrigger><SelectValue placeholder="Tipo" /></SelectTrigger><SelectContent>{['Planting', 'Spraying', 'Fertilizing', 'Harvesting'].map(o => <SelectItem key={o} value={o}>{t(`operations.types.${o.toLowerCase()}`)}</SelectItem>)}</SelectContent></Select>
+              <Select onValueChange={(v) => form.setValue('operation_type', v as 'Planting' | 'Spraying' | 'Fertilizing' | 'Harvesting')}><SelectTrigger><SelectValue placeholder="Tipo" /></SelectTrigger><SelectContent>{['Planting', 'Spraying', 'Fertilizing', 'Harvesting'].map(o => <SelectItem key={o} value={o}>{t(`operations.types.${o.toLowerCase()}`)}</SelectItem>)}</SelectContent></Select>
             </div>
             
             <div className="space-y-2">
               <Label>{t('operations.inputs')}</Label>
               {inputFields.map((field, idx) => (
                 <div key={field.id} className="flex gap-2">
-                  <Select onValueChange={(v) => form.setValue(`inputs.${idx}.inventory_item_id` as any, v)}><SelectTrigger><SelectValue placeholder="Insumo" /></SelectTrigger><SelectContent>{inventory?.map(i => <SelectItem key={i.id} value={i.id}>{i.name}</SelectItem>)}</SelectContent></Select>
-                  <Input type="number" {...form.register(`inputs.${idx}.quantity_used` as any, { valueAsNumber: true })} placeholder="Qtd" />
+                  <Select onValueChange={(v) => form.setValue(`inputs.${idx}.inventory_item_id`, v)}><SelectTrigger><SelectValue placeholder="Insumo" /></SelectTrigger><SelectContent>{inventory?.map(i => <SelectItem key={i.id} value={i.id}>{i.name}</SelectItem>)}</SelectContent></Select>
+                  <Input type="number" {...form.register(`inputs.${idx}.quantity_used`, { valueAsNumber: true })} placeholder="Qtd" />
                   <Button variant="ghost" size="icon" onClick={() => remove(idx)}><Trash2 className="h-4 w-4 text-rose-500" /></Button>
                 </div>
               ))}
@@ -112,7 +125,7 @@ export const OperationsPage: React.FC = () => {
       </Dialog>
 
       <div className="space-y-4">
-        {operations?.map((op: any) => (
+        {operations.map((op: Operation) => (
           <Card key={op.id} className="p-4 flex items-center justify-between">
             <div>
               <p className="font-bold">{t(`operations.types.${op.operation_type.toLowerCase()}`)}</p>

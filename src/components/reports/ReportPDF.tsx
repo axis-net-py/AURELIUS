@@ -15,7 +15,13 @@ const styles = StyleSheet.create({
   footerText: { fontSize: 8, color: '#94A3B8' }
 });
 
-export const ReportPDF: React.FC<{ data: any }> = ({ data }) => (
+interface ReportData {
+  roi: number
+  netProfit: string
+  yield: number
+}
+
+export const ReportPDF: React.FC<{ data: ReportData }> = ({ data }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>

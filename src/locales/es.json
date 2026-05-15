@@ -37,9 +37,17 @@
     "active_fields": "Lotes en producción",
     "monthly_flow": "Flujo Financiero (Mensual)",
     "expenses_by_category": "Gastos por Categoría",
-    "revenue_description": "Ventas de Soja y Maíz",
-    "expenses_description": "Insumos y Diésel"
-  },
+    "cost_vs_revenue": "Costo vs Ingresos",
+    "cost_distribution": "Distribución de Costos",
+    "price_evolution": "Evolución de Precios",
+    "roi": "Rentabilidad (ROI)",
+    "break_even": "Punto de Equilibrio",
+    "total_costs": "Costos Totales",
+    "profit": "Utilidad Neta",
+    "profit_margin": "Margen de Utilidad",
+    "cost_per_ha": "Costo por Hectárea",
+    "war_room": "War Room"
+    },
   "fields": {
     "title": "Control de Lotes",
     "subtitle": "Gestione sus áreas de siembra.",

@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Mic, Sparkles, MessageSquare, Activity } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Sparkles, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -28,7 +28,7 @@ export const VoiceInputFAB: React.FC = () => {
       mediaRecorder.start();
       setIsRecording(true);
       toast("Gravando...", { icon: "🎙️" });
-    } catch (err) {
+    } catch {
       toast.error("Erro ao acessar o microfone.");
     }
   };

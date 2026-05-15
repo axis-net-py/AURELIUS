@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -13,7 +13,6 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Loader2, Plus } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
 import { fieldService } from '@/services/fieldService'
 import { useAuthStore } from '@/store/useAuthStore'
 
@@ -26,18 +25,22 @@ const fieldSchema = z.object({
   status: z.enum(['active', 'inactive']),
 })
 
-type FieldFormValues = z.infer<typeof fieldSchema>
+interface FieldFormData {
+  name: string
+  area: string
+  crop: string
+  status: 'active' | 'inactive'
+}
 
 interface NewFieldFormProps {
-  onSuccess: (data: any) => void
+  onSuccess: (data: FieldFormData) => void
 }
 
 export const NewFieldForm: React.FC<NewFieldFormProps> = ({ onSuccess }) => {
   const [isLoading, setIsLoading] = React.useState(false)
-  const { t } = useTranslation()
   const { user } = useAuthStore()
 
-  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<FieldFormValues>({
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<FieldFormData>({
     resolver: zodResolver(fieldSchema),
     defaultValues: {
       name: '',
@@ -47,7 +50,7 @@ export const NewFieldForm: React.FC<NewFieldFormProps> = ({ onSuccess }) => {
     }
   })
 
-  const onSubmit = async (data: FieldFormValues) => {
+  const onSubmit = async (data: FieldFormData) => {
     if (!user?.farm_id) {
       console.error("No farm_id found for user")
       return

@@ -1,5 +1,14 @@
 import { supabase } from '@/lib/supabase'
 
+export interface Season {
+  id: string
+  farm_id: string
+  name: string
+  crop: string
+  start_date: string
+  status: 'planned' | 'active' | 'harvested' | 'closed'
+}
+
 export const fetchSeasons = async (farmId: string) => {
   const { data, error } = await supabase
     .from('crop_seasons')
@@ -11,7 +20,7 @@ export const fetchSeasons = async (farmId: string) => {
   return data
 }
 
-export const createSeason = async (season: any) => {
+export const createSeason = async (season: Omit<Season, 'id'>) => {
   const { data, error } = await supabase
     .from('crop_seasons')
     .insert([season])

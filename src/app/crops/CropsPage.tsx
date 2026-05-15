@@ -1,50 +1,46 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Plus, Map, Sprout, Loader2 } from 'lucide-react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Plus, Map, Sprout } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useTranslation } from 'react-i18next'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/useAuthStore'
-import { toast } from 'sonner'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
 import { useQuery } from '@tanstack/react-query'
 
-const fieldSchema = z.object({
-  name: z.string().min(1, 'Nome obrigatório'),
-  area_hectares: z.number().min(0),
-})
+interface Field {
+  id: string
+  name: string
+  area_hectares: number
+  status: string
+}
 
-const seasonSchema = z.object({
-  name: z.string().min(1, 'Nome obrigatório'),
-  start_date: z.string().min(1),
-  end_date: z.string().optional(),
-})
+interface Season {
+  id: string
+  name: string
+  start_date: string
+  status: string
+}
 
 export const CropsPage: React.FC = () => {
   const { t } = useTranslation()
   const { user } = useAuthStore()
-  const [isAddFieldOpen, setIsAddFieldOpen] = useState(false)
-  const [isAddSeasonOpen, setIsAddSeasonOpen] = useState(false)
 
-  const { data: fields, refetch: refetchFields } = useQuery({
+  const { data: fields = [] } = useQuery<Field[]>({
     queryKey: ['fields', user?.farm_id],
     queryFn: async () => {
-      const { data } = await supabase.from('fields').select('*').eq('farm_id', user?.farm_id)
+      if (!user?.farm_id) return []
+      const { data } = await supabase.from('fields').select('*').eq('farm_id', user.farm_id)
       return data || []
     },
     enabled: !!user?.farm_id
   })
 
-  const { data: seasons, refetch: refetchSeasons } = useQuery({
+  const { data: seasons = [] } = useQuery<Season[]>({
     queryKey: ['seasons', user?.farm_id],
     queryFn: async () => {
-      const { data } = await supabase.from('crop_seasons').select('*').eq('farm_id', user?.farm_id)
+      if (!user?.farm_id) return []
+      const { data } = await supabase.from('crop_seasons').select('*').eq('farm_id', user.farm_id)
       return data || []
     },
     enabled: !!user?.farm_id
@@ -64,12 +60,12 @@ export const CropsPage: React.FC = () => {
         
         <TabsContent value="fields" className="space-y-4 pt-4">
             <div className="flex justify-end">
-                <Button className="rounded-xl" onClick={() => setIsAddFieldOpen(true)}>
+                <Button className="rounded-xl">
                 <Plus className="mr-2 h-4 w-4" /> {t('fields.add_button')}
                 </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {fields?.map((f: any) => (
+                {fields.map((f: Field) => (
                     <Card key={f.id} className="rounded-3xl shadow-sm">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-3">
@@ -90,12 +86,12 @@ export const CropsPage: React.FC = () => {
 
         <TabsContent value="seasons" className="space-y-4 pt-4">
             <div className="flex justify-end">
-                <Button className="rounded-xl" onClick={() => setIsAddSeasonOpen(true)}>
+                <Button className="rounded-xl">
                 <Plus className="mr-2 h-4 w-4" /> {t('seasons.add_button')}
                 </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {seasons?.map((s: any) => (
+                {seasons.map((s: Season) => (
                     <Card key={s.id} className="rounded-3xl shadow-sm">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-3">

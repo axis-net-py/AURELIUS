@@ -82,7 +82,7 @@ export async function transcribeAudio(mediaUrl: string): Promise<string> {
   formData.append('model', 'whisper-1');
 
   const transcription = await openai.audio.transcriptions.create({
-    file: Buffer.from(response.data) as any,
+    file: new File([Buffer.from(response.data)], 'audio.ogg', { type: 'audio/ogg' }),
     model: 'whisper-1',
   });
   
@@ -103,7 +103,7 @@ export async function parseMessage(text: string) {
       return JSON.parse(content.text);
     }
     return { intent: 'unknown', raw_text: text };
-  } catch (e) {
+  } catch {
     return { intent: 'unknown', raw_text: text };
   }
 }

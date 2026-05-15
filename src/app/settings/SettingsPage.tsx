@@ -11,7 +11,6 @@ import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useCurrencyStore } from '@/store/useCurrencyStore';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 
 const farmSchema = z.object({
@@ -24,7 +23,6 @@ const farmSchema = z.object({
 export const SettingsPage: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { user } = useAuthStore();
-  const { currency } = useCurrencyStore();
   const form = useForm({ resolver: zodResolver(farmSchema) });
   const [isDark, setIsDark] = React.useState(
     document.documentElement.classList.contains('dark')
@@ -43,7 +41,7 @@ export const SettingsPage: React.FC = () => {
     setIsDark(newIsDark)
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Record<string, unknown>) => {
     if (!user?.farm_id) return;
     const { error } = await supabase.from('farms').upsert({ id: user.farm_id, ...data });
     if (error) toast.error(t('common.error'));

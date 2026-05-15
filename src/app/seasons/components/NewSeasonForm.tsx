@@ -27,7 +27,7 @@ const seasonSchema = z.object({
 type SeasonFormValues = z.infer<typeof seasonSchema>
 
 interface NewSeasonFormProps {
-  onSuccess: (data: any) => void
+  onSuccess: (data: unknown) => void
 }
 
 export const NewSeasonForm: React.FC<NewSeasonFormProps> = ({ onSuccess }) => {
@@ -105,7 +105,7 @@ export const NewSeasonForm: React.FC<NewSeasonFormProps> = ({ onSuccess }) => {
 
       <div className="space-y-2">
         <Label htmlFor="status">{t('seasons.form.status', 'Status')}</Label>
-        <Select defaultValue="active" onValueChange={(v) => setValue('status', v as any)}>
+        <Select defaultValue="active" onValueChange={(v) => setValue('status', v as 'planned' | 'active' | 'harvested' | 'closed')}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione o status" />
           </SelectTrigger>

@@ -9,10 +9,10 @@ export interface UserProfile {
 
 export interface AuthState {
   user: UserProfile | null
-  session: any | null
+  session: unknown | null
   isLoading: boolean
   setUser: (user: UserProfile | null) => void
-  setSession: (session: any | null) => void
+  setSession: (session: unknown | null) => void
   setLoading: (isLoading: boolean) => void
   signOut: () => Promise<void>
 }

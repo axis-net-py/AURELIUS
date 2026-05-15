@@ -37,16 +37,34 @@ const fuelSchema = z.object({
   cost: z.string().min(1),
 })
 
-type FormData = z.infer<typeof schema>
+interface Machine {
+  id: string
+  name: string
+  type: string
+  current_hours: number
+}
+
+interface MaintenanceFormData {
+  date: string
+  type: 'preventive' | 'corrective'
+  description: string
+  cost: string
+}
+
+interface FuelFormData {
+  date: string
+  liters: string
+  cost: string
+}
 
 export const MachineryPage: React.FC = () => {
   const { t } = useTranslation()
   const { user } = useAuthStore()
   const [isAddOpen, setIsAddOpen] = useState(false)
-  const [machinery, setMachinery] = useState<any[]>([])
+  const [machinery, setMachinery] = useState<Machine[]>([])
   const [loadingData, setLoadingData] = useState(true)
-  const [maintenanceTarget, setMaintenanceTarget] = useState<any>(null)
-  const [fuelTarget, setFuelTarget] = useState<any>(null)
+  const [maintenanceTarget, setMaintenanceTarget] = useState<Machine | null>(null)
+  const [fuelTarget, setFuelTarget] = useState<Machine | null>(null)
   
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -58,7 +76,7 @@ export const MachineryPage: React.FC = () => {
         .from('machinery')
         .select('*')
         .order('created_at', { ascending: false })
-      if (!error && data) setMachinery(data)
+      if (!error && data) setMachinery(data as Machine[])
       setLoadingData(false)
     }
     fetchMachinery()
@@ -170,10 +188,10 @@ export const MachineryPage: React.FC = () => {
 
 const MaintenanceForm = ({ machineId, onSuccess }: { machineId: string, onSuccess: () => void }) => {
   const [loading, setLoading] = React.useState(false)
-  const form = useForm({ resolver: zodResolver(maintenanceSchema),
+  const form = useForm<MaintenanceFormData>({ resolver: zodResolver(maintenanceSchema),
     defaultValues: { date: new Date().toISOString().split('T')[0], type: 'preventive' }
   })
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: MaintenanceFormData) => {
     setLoading(true)
     const { error } = await supabase.from('machinery_maintenance').insert({
       machinery_id: machineId,
@@ -218,10 +236,10 @@ const MaintenanceForm = ({ machineId, onSuccess }: { machineId: string, onSucces
 
 const FuelForm = ({ machineId, onSuccess }: { machineId: string, onSuccess: () => void }) => {
   const [loading, setLoading] = React.useState(false)
-  const form = useForm({ resolver: zodResolver(fuelSchema),
+  const form = useForm<FuelFormData>({ resolver: zodResolver(fuelSchema),
     defaultValues: { date: new Date().toISOString().split('T')[0] }
   })
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FuelFormData) => {
     setLoading(true)
     const { error } = await supabase.from('machinery_logs').insert({
       machinery_id: machineId,
