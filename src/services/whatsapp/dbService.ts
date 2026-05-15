@@ -13,7 +13,13 @@ export async function saveFieldScouting(fieldId: string, imageUrl: string, diagn
   return { error };
 }
 
-export async function handleWhatsAppAction(parsedData: any, phone: string, farmId: string) {
+interface WhatsAppData {
+  intent: string
+  season_hint?: string
+  [key: string]: unknown
+}
+
+export async function handleWhatsAppAction(parsedData: WhatsAppData, phone: string, farmId: string) {
   if (parsedData.intent === 'unknown') {
     return await sendWhatsAppMessage(phone, "⚠️ Não entendi. Por favor, tente descrever com mais detalhes o valor e o produto.");
   }
@@ -23,7 +29,7 @@ export async function handleWhatsAppAction(parsedData: any, phone: string, farmI
     .from('crop_seasons')
     .select('id')
     .eq('farm_id', farmId)
-    .ilike('name', `%${parsedData.season_hint || ''}%`)
+    .ilike('name', `%${(parsedData.season_hint as string) || ''}%`)
     .single();
 
   // Insert Record
@@ -36,7 +42,7 @@ export async function handleWhatsAppAction(parsedData: any, phone: string, farmI
   };
 
   const { error } = await supabase
-    .from(tableMap[parsedData.intent])
+    .from(tableMap[parsedData.intent] || 'expenses')
     .insert([{ ...parsedData, farm_id: farmId, season_id: season?.id }]);
 
   if (error) {

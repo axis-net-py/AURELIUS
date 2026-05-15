@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Sharon Display", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-ui: "Inter", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-background: #ffffff;
+  --color-foreground: #20252a;
+  --color-card: #f4f6f8;
+  --color-card-foreground: #20252a;
+  --color-primary: #00a868;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f4f4f5;
+  --color-secondary-foreground: #111111;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #667781;
+  --color-accent: #00a868;
+  --color-accent-foreground: #ffffff;
+  --color-border: #d5dee8;
+  --color-ring: #00a868;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #20252a;
+  --color-input: #d5dee8;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  
+  --color-surface-container: #f8fafc;
+  --color-surface-container-high: #ffffff;
+  --color-surface-inverse: #ffffff;
+  --color-surface-inverse-foreground: #20252a;
+
+  --radius-card: 16px;
+  --radius-input: 8px;
+  --radius-button: 9999px;
+  --radius-pill: 9999px;
+  --color-surface-container: #f8fafc;
+  --color-surface-container-high: #ffffff;
+  }
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #20252a;
+  --color-card: #f4f6f8;
+  --color-card-foreground: #20252a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #20252a;
+  --color-input: #d5dee8;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-primary: #00a868;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f4f4f5;
+  --color-secondary-foreground: #111111;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #667781;
+  --color-accent: #00a868;
+  --color-accent-foreground: #ffffff;
+  --color-border: #d5dee8;
+  --color-ring: #00a868;
+  --color-surface-container: #f8fafc;
+  --color-surface-container-high: #ffffff;
+  --color-surface-inverse: #ffffff;
+  --color-surface-inverse-foreground: #20252a;
+}
+
+.dark {
+  --color-background: #0f1a14;
+  --color-foreground: #e8f0eb;
+  --color-card: #1a2e22;
+  --color-card-foreground: #e8f0eb;
+  --color-popover: #1a2e22;
+  --color-popover-foreground: #e8f0eb;
+  --color-input: #2d4a38;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-primary: #00a868;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #1e3028;
+  --color-secondary-foreground: #e8f0eb;
+  --color-muted: #1e3028;
+  --color-muted-foreground: #8aab96;
+  --color-accent: #00c97d;
+  --color-accent-foreground: #ffffff;
+  --color-border: #2d4a38;
+  --color-ring: #00a868;
+  --color-surface-container: #152219;
+  --color-surface-container-high: #1a2e22;
+  --color-surface-inverse: #1a2e22;
+  --color-surface-inverse-foreground: #e8f0eb;
+}
+
+/* Base styles without breaking Tailwind v4 utilities */
+body {
+  @apply bg-background text-foreground font-body transition-colors duration-200 min-h-screen;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-display font-semibold;
+}
+
+h1 { @apply text-[40px] leading-[1.1] tracking-[-0.02em]; }
+h2 { @apply text-[32px] leading-[1.15] tracking-[-0.02em]; }
+h3 { @apply text-[24px] leading-[1.2] tracking-[-0.01em]; }
+
+

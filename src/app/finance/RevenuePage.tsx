@@ -12,13 +12,22 @@ import { supabase } from '@/lib/supabase'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 
+interface Revenue {
+  id: string
+  date: string
+  commodity: string
+  buyer: string | null
+  amount: number
+  quantity_tons: number | null
+}
+
 export const RevenuePage: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const { currency } = useCurrencyStore()
   const { t } = useTranslation()
 
-  const { data: revenues = [], isLoading, refetch } = useQuery({
+  const { data: revenues = [], isLoading, refetch } = useQuery<Revenue[]>({
     queryKey: ['revenues'],
     queryFn: async () => {
       if (!supabase) return []
@@ -27,11 +36,11 @@ export const RevenuePage: React.FC = () => {
         .select('*, fields(name)')
         .order('date', { ascending: false })
       if (error) throw error
-      return data || []
+      return (data as unknown as Revenue[]) || []
     }
   })
 
-  const filtered = revenues.filter((r: any) =>
+  const filtered = revenues.filter((r) =>
     r.buyer?.toLowerCase().includes(search.toLowerCase()) ||
     r.commodity?.toLowerCase().includes(search.toLowerCase())
   )
@@ -102,7 +111,7 @@ export const RevenuePage: React.FC = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filtered.map((revenue: any) => (
+                {filtered.map((revenue: Revenue) => (
                   <TableRow key={revenue.id} className="hover:bg-muted/20 transition-colors">
                     <TableCell className="font-medium">{revenue.date}</TableCell>
                     <TableCell>

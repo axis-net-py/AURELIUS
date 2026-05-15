@@ -1,7 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { fieldService } from './fieldService';
-import { expenseService } from './expenseService'; // Assuming this exists or will be created
-import { seasonService } from './seasonService';
 
 const anthropic = new Anthropic({
   apiKey: import.meta.env.VITE_ANTHROPIC_API_KEY || '',
@@ -10,7 +8,7 @@ const anthropic = new Anthropic({
 
 export interface ParsedAgroData {
   intent: 'EXPENSE' | 'HARVEST' | 'FUEL' | 'MAINTENANCE' | 'STOCK';
-  data: any;
+  data: Record<string, unknown>;
   confidence: number;
 }
 

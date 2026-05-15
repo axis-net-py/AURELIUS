@@ -12,13 +12,26 @@ import { supabase } from '@/lib/supabase'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
 
+interface Field {
+  name: string
+}
+
+interface Expense {
+  id: string
+  date: string
+  category: string
+  supplier: string | null
+  amount: number
+  fields?: Field | null
+}
+
 export const ExpensePage: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const { currency } = useCurrencyStore()
   const { t } = useTranslation()
 
-  const { data: expenses = [], isLoading, refetch } = useQuery({
+  const { data: expenses = [], isLoading, refetch } = useQuery<Expense[]>({
     queryKey: ['expenses'],
     queryFn: async () => {
       if (!supabase) return []
@@ -27,11 +40,11 @@ export const ExpensePage: React.FC = () => {
         .select('*, fields(name)')
         .order('date', { ascending: false })
       if (error) throw error
-      return data || []
+      return (data as unknown as Expense[]) || []
     }
   })
 
-  const filtered = expenses.filter((e: any) =>
+  const filtered = expenses.filter((e) =>
     e.supplier?.toLowerCase().includes(search.toLowerCase()) ||
     e.category?.toLowerCase().includes(search.toLowerCase()) ||
     e.fields?.name?.toLowerCase().includes(search.toLowerCase())
@@ -101,7 +114,7 @@ export const ExpensePage: React.FC = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filtered.map((expense: any) => (
+                {filtered.map((expense: Expense) => (
                   <TableRow key={expense.id} className="hover:bg-muted/20 transition-colors">
                     <TableCell className="font-medium">{expense.date}</TableCell>
                     <TableCell>
