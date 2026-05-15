@@ -6,6 +6,7 @@
 
 ## Completed Tracks
 
+- [bi-dashboard-implementation](tracks/bi-dashboard-implementation/index.md) - Financial Dashboard and BI Module
 - [refactor-finance-supabase-imports](tracks/refactor-finance-supabase-imports/index.md) - Refactor Supabase imports in finance forms
 - [fix-tailwind-v4-config](tracks/fix-tailwind-v4-config/index.md) - Tailwind v4 Configuration Fix
 - [settings-page-enhancements](tracks/settings-page-enhancements/index.md) - SettingsPage Enhancements
