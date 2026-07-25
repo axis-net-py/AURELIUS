@@ -3,6 +3,11 @@ import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { Decimal } from "decimal.js";
 import { createPurchaseInvoice, createSalesInvoice } from "@/app/actions/invoice";
+import {
+  resolveLocale,
+  localeLanguageName,
+  serverMessages,
+} from "@/lib/i18n/server-messages";
 
 // Normalizes numbers (integer for PYG, float for quantity) and cleans LatAm separators
 function parseExtractedNumber(val: any, isPyg: boolean = false): number {
@@ -364,16 +369,22 @@ function localInvoiceProcessor() {
 }
 
 export async function POST(req: NextRequest) {
+  // Idioma ativo do usuario (cookie definido pelo language-provider): a IA e as
+  // mensagens de erro devem sempre usar o mesmo idioma que a interface exibe.
+  const locale = resolveLocale(req.cookies.get("NEXT_LOCALE")?.value);
+  const langName = localeLanguageName(locale);
+  const m = serverMessages(locale);
+
   const session = await auth();
   if (!session?.user?.tenantId) {
-    return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
+    return NextResponse.json({ error: m.notAuthenticated }, { status: 401 });
   }
   const tenantId = session.user.tenantId;
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
-      { error: "A chave GEMINI_API_KEY não está configurada no servidor. A IA integrada precisa da chave para processar comandos reais." },
+      { error: m.missingApiKey },
       { status: 500 }
     );
   }
@@ -473,7 +484,7 @@ Retorne APENAS um objeto JSON puro no seguinte formato, sem formatação markdow
 
       if (!extracted) {
         return NextResponse.json(
-          { error: "Não foi possível analisar ou extrair os dados estruturados da fatura usando a IA do Gemini." },
+          { error: m.invoiceParseFailed },
           { status: 500 }
         );
       }
@@ -617,13 +628,18 @@ Retorne APENAS um objeto JSON puro no seguinte formato, sem formatação markdow
       return NextResponse.json({
         action: "create_purchase_invoice",
         invoiceId: createdInvoice.id,
-        message: `Fatura de compra #${extracted.documentNumber || createdInvoice.id.slice(-6)} do fornecedor "${supplier.name}" (${extracted.paymentMethod === "A_PRAZO" ? "A Prazo" : "À Vista"}) importada com sucesso via IA! Foram cadastrados/associados ${resolvedItems.length} produtos sem duplicidades.`
+        message: m.invoiceImported(
+          extracted.documentNumber || createdInvoice.id.slice(-6),
+          supplier.name,
+          extracted.paymentMethod === "A_PRAZO",
+          resolvedItems.length
+        )
       });
     }
 
     // 2. Leaf disease image diagnostic request
     if (activePurpose === "diagnostic" && fileBase64) {
-      const prompt = "Analise esta imagem de folha/planta. Identifique se há alguma praga ou doença (como Ferrugem Asiática, Oídio, Mancha Alvo, etc.). Retorne o nome da doença detectada, gravidade estimada e as recomendações técnicas agronômicas detalhadas de tratamento em português.";
+      const prompt = "Analise esta imagem de folha/planta. Identifique se há alguma praga ou doença (como Ferrugem Asiática, Oídio, Mancha Alvo, etc.). Retorne o nome da doença detectada, gravidade estimada e as recomendações técnicas agronômicas detalhadas de tratamento. Escreva a resposta inteira em " + langName + ".";
       const geminiResponse = await callGemini(prompt, fileBase64, mimeType || "image/jpeg");
       if (geminiResponse) {
         return NextResponse.json({
@@ -633,7 +649,7 @@ Retorne APENAS um objeto JSON puro no seguinte formato, sem formatação markdow
       }
       
       return NextResponse.json(
-        { error: "Falha na análise de diagnóstico de folhas pelo Gemini." },
+        { error: m.leafDiagnosisFailed },
         { status: 500 }
       );
     }
@@ -651,7 +667,7 @@ Retorne APENAS um objeto JSON puro no seguinte formato, sem formatação markdow
 
         const newEngineResult = await generateText({
           model: farmModel(),
-          system: `Você é o assistente de IA do AXIS Farm, um ERP agrícola. Responda em português.
+          system: `Você é o assistente de IA do AXIS Farm, um ERP agrícola. Responda SEMPRE em ${langName}, independentemente do idioma em que o usuário escreveu.
 Você só tem ferramentas para: frota (manutenção/combustível de veículos), talhão (aplicação de insumo/análise de solo/turno de irrigação), safra (consulta de rentabilidade), silo (movimento de estoque de grão), rebanho (pesagem/sanidade/movimentação de gado) e certificações.
 Se o pedido do usuário for sobre CLIENTES, FORNECEDORES, PRODUTOS, FATURAS, TRANSAÇÕES FINANCEIRAS, ou CADASTRAR (criar do zero) uma nova safra, talhão, veículo, funcionário ou contrato, responda apenas com o texto exato "__FALLBACK__" e nada mais — esses casos são tratados por outro sistema.
 Para tudo que suas ferramentas cobrem (registrar ou consultar), execute diretamente.`,
@@ -693,12 +709,12 @@ Se a intenção do usuário corresponder a um cadastro, retorne um objeto JSON p
 {
   "action": "nome_da_acao",
   "data": { ...campos mapeados... },
-  "message": "Mensagem amigável de sucesso em português explicando o que foi feito"
+  "message": "Mensagem amigável de sucesso em ${langName} explicando o que foi feito"
 }
 Se for apenas conversa ou dúvida, retorne:
 {
   "action": "chat",
-  "message": "Sua resposta amigável sobre o sistema AXIS Farm ERP agrícola"
+  "message": "Sua resposta amigável sobre o sistema AXIS Farm ERP agrícola, escrita em ${langName}"
 }`;
 
       const geminiResponse = await callGemini(prompt);
@@ -712,7 +728,7 @@ Se for apenas conversa ou dúvida, retorne:
       }
 
       if (!result) {
-        return NextResponse.json({ error: "Falha ao interpretar o comando do assistente de IA." }, { status: 500 });
+        return NextResponse.json({ error: m.commandParseFailed }, { status: 500 });
       }
 
       // Execute database actions if detected
@@ -1013,7 +1029,7 @@ Se for apenas conversa ou dúvida, retorne:
       });
     }
 
-    return NextResponse.json({ error: "Prompt vazio" }, { status: 400 });
+    return NextResponse.json({ error: m.emptyPrompt }, { status: 400 });
   } catch (err: any) {
     console.error("AI Route error:", err);
     return NextResponse.json({ error: err.message || "Erro no processamento da IA" }, { status: 500 });

@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { Suspense } from 'react';
 import { StatsCards } from '@/components/dashboard/StatsCards';
 import { RecentContracts } from '@/components/dashboard/RecentContracts';
@@ -18,10 +19,12 @@ const defaultDateRange = {
 // Default currency - should come from tenant settings
 const defaultCurrency = 'PYG' as const;
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const t = await getTranslations("pages.dashboard");
+
   return (
     <div className="space-y-4 md:space-y-6">
-      <PageHeader title="Dashboard" subtitle="Visão geral da fazenda" />
+      <PageHeader title={t("title")} subtitle={t("subtitle")} />
 
       {/* GPS Weather Card */}
       <WeatherCard />

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState, useRef, useEffect } from "react";
 import {
   MessageSquare,
@@ -27,11 +28,12 @@ interface Message {
 export function AIAssistant({ tenantId }: { tenantId: string }) {
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations("ai");
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: "bot",
-      text: "Olá! Sou o Assistente AXIS Farm IA. Diga comandos como:\n• 'cadastrar safra Soja 2026'\n• 'adicionar talhão Leste de 25 hectares'\n• 'cadastrar contrato 104 de soja para silo Lar de 200 toneladas'\n\nOu envie fotos de folhas de plantio para diagnosticar doenças, ou PDFs/Imagens de faturas de compra para cadastrá-las automaticamente.",
+      text: t("greeting"),
     },
   ]);
   const [inputText, setInputText] = useState("");
@@ -56,7 +58,7 @@ export function AIAssistant({ tenantId }: { tenantId: string }) {
         const rec = new SpeechRecognition();
         rec.continuous = false;
         rec.interimResults = false;
-        rec.lang = "pt-BR";
+        rec.lang = t("speechLang");
 
         rec.onstart = () => {
           setIsRecording(true);
@@ -122,7 +124,7 @@ export function AIAssistant({ tenantId }: { tenantId: string }) {
     } catch (err: any) {
       setMessages((prev) => [
         ...prev,
-        { sender: "bot", text: err.message || "Desculpe, tive um problema ao processar seu comando." },
+        { sender: "bot", text: err.message || t("genericError") },
       ]);
     } finally {
       setLoading(false);
@@ -178,7 +180,7 @@ export function AIAssistant({ tenantId }: { tenantId: string }) {
       console.error(error);
       setMessages((prev) => [
         ...prev,
-        { sender: "bot", text: `Erro ao preparar arquivo: ${error.message || "Desculpe, tive um problema ao salvar seu documento."}` },
+        { sender: "bot", text: `Erro ao preparar arquivo: ${error.message || t("fileError")}` },
       ]);
       setLoading(false);
     }
@@ -255,8 +257,8 @@ export function AIAssistant({ tenantId }: { tenantId: string }) {
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-primary animate-pulse" />
               <div>
-                <h3 className="text-sm font-bold text-foreground">AXIS Farm IA</h3>
-                <span className="text-[9px] font-semibold text-emerald-500 uppercase tracking-widest">Online</span>
+                <h3 className="text-sm font-bold text-foreground">{t("title")}</h3>
+                <span className="text-[9px] font-semibold text-emerald-500 uppercase tracking-widest">{t("online")}</span>
               </div>
             </div>
             <button
@@ -319,7 +321,7 @@ export function AIAssistant({ tenantId }: { tenantId: string }) {
                 </div>
                 <div className="bg-muted/40 border border-border rounded-xl px-4 py-3 flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin text-primary" />
-                  <span className="text-xs text-muted-foreground font-medium">Analisando...</span>
+                  <span className="text-xs text-muted-foreground font-medium">{t("analyzing")}</span>
                 </div>
               </div>
             )}
@@ -342,7 +344,7 @@ export function AIAssistant({ tenantId }: { tenantId: string }) {
               type="button"
               onClick={triggerImageSelect}
               className="p-2 hover:bg-muted rounded-lg text-muted-foreground hover:text-foreground transition-all shrink-0"
-              title="Enviar Arquivo (Fatura ou Folha)"
+              title={t("sendFile")}
             >
               <ImageIcon className="w-4.5 h-4.5" />
             </button>
@@ -356,7 +358,7 @@ export function AIAssistant({ tenantId }: { tenantId: string }) {
                   ? "bg-rose-600 text-white animate-pulse"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
-              title="Digitar por voz"
+              title={t("voiceInput")}
             >
               {isRecording ? <MicOff className="w-4.5 h-4.5" /> : <Mic className="w-4.5 h-4.5" />}
             </button>
@@ -366,7 +368,7 @@ export function AIAssistant({ tenantId }: { tenantId: string }) {
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Digite ou fale um comando..."
+              placeholder={t("inputPlaceholder")}
               className="flex-1 bg-background border border-border h-9 rounded-lg px-3 text-[12.5px] font-medium focus:outline-none focus:ring-1 focus:ring-primary shadow-inner"
             />
 

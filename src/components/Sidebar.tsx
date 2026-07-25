@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -35,85 +36,42 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { icon: LayoutDashboard, key: "dashboard",  defaultLabel: "Dashboard",   href: "dashboard" },
-  { icon: FileText,        key: "invoices",   defaultLabel: "Faturas",      href: "invoices" },
-  { icon: Package,         key: "products",   defaultLabel: "Produtos",     href: "products" },
-  { icon: Users,           key: "customers",  defaultLabel: "Clientes",     href: "customers" },
-  { icon: Truck,           key: "suppliers",  defaultLabel: "Fornecedores", href: "suppliers" },
-  { icon: Sprout,          key: "safra",      defaultLabel: "Safras",       href: "safra" },
-  { icon: Map,             key: "talhoes",    defaultLabel: "Talhões",      href: "talhoes" },
-  { icon: Warehouse,       key: "silos",      defaultLabel: "Silos",        href: "silos" },
-  { icon: Beef,            key: "rebanho",    defaultLabel: "Rebanho",      href: "rebanho" },
-  { icon: Tractor,         key: "frota",      defaultLabel: "Frota",        href: "frota" },
-  { icon: UserCheck,       key: "funcionarios", defaultLabel: "Funcionários", href: "funcionarios" },
-  { icon: Handshake,       key: "contratos",  defaultLabel: "Contratos",    href: "contratos" },
-  { icon: BadgeCheck,      key: "certificacoes", defaultLabel: "Certificações", href: "certificacoes" },
-  { icon: BookOpen,        key: "accounting", defaultLabel: "Contabilidade",href: "accounting" },
-  { icon: BarChart3,       key: "reports",    defaultLabel: "Relatórios",   href: "reports" },
+  { icon: LayoutDashboard, key: "dashboard",   href: "dashboard" },
+  { icon: FileText,        key: "invoices",      href: "invoices" },
+  { icon: Package,         key: "products",     href: "products" },
+  { icon: Users,           key: "customers",     href: "customers" },
+  { icon: Truck,           key: "suppliers", href: "suppliers" },
+  { icon: Sprout,          key: "safra",       href: "safra" },
+  { icon: Map,             key: "talhoes",      href: "talhoes" },
+  { icon: Warehouse,       key: "silos",        href: "silos" },
+  { icon: Beef,            key: "rebanho",      href: "rebanho" },
+  { icon: Tractor,         key: "frota",        href: "frota" },
+  { icon: UserCheck,       key: "funcionarios", href: "funcionarios" },
+  { icon: Handshake,       key: "contratos",    href: "contratos" },
+  { icon: BadgeCheck,      key: "certificacoes", href: "certificacoes" },
+  { icon: BookOpen,        key: "accounting",href: "accounting" },
+  { icon: BarChart3,       key: "reports",   href: "reports" },
 ];
 
 const bottomItems = [
-  { icon: RefreshCw, key: "cambio",   defaultLabel: "Câmbio",        href: "settings/exchange-rates" },
-  { icon: Settings,  key: "settings", defaultLabel: "Configurações", href: "settings/team" },
+  { icon: RefreshCw, key: "cambio",        href: "settings/exchange-rates" },
+  { icon: Settings,  key: "settings", href: "settings/team" },
 ];
 
 export function Sidebar({ tenantId, collapsed = false }: SidebarProps) {
   const pathname = usePathname();
   const { language, setLanguage } = useLanguage();
+  const t = useTranslations("nav");
+  const tH = useTranslations("header");
   const { theme, setTheme } = useTheme();
-
-  const labelsMap: Record<string, Record<string, string>> = {
-    pt: {
-      dashboard: "Dashboard",
-      invoices: "Faturas",
-      products: "Produtos",
-      customers: "Clientes",
-      suppliers: "Fornecedores",
-      safra: "Safras",
-      talhoes: "Talhões",
-      silos: "Silos",
-      rebanho: "Rebanho",
-      frota: "Frota",
-      funcionarios: "Funcionários",
-      contratos: "Contratos",
-      certificacoes: "Certificações",
-      accounting: "Contabilidade",
-      reports: "Relatórios",
-      cambio: "Câmbio",
-      settings: "Configurações",
-    },
-    es: {
-      dashboard: "Tablero",
-      invoices: "Facturas",
-      products: "Productos",
-      customers: "Clientes",
-      suppliers: "Proveedores",
-      safra: "Cosechas",
-      talhoes: "Parcelas",
-      silos: "Silos",
-      rebanho: "Ganado",
-      frota: "Flota",
-      funcionarios: "Personal",
-      contratos: "Contratos",
-      certificacoes: "Certificaciones",
-      accounting: "Contabilidad",
-      reports: "Reportes",
-      cambio: "Cambio",
-      settings: "Configuraciones",
-    },
-  };
-
-  const getLabel = (key: string, defaultLabel: string) => {
-    return labelsMap[language]?.[key] || defaultLabel;
-  };
 
   const isActive = (href: string) =>
     pathname === `/${tenantId}/${href}` ||
     (href !== "dashboard" && pathname.startsWith(`/${tenantId}/${href}`));
 
-  const NavLink = ({ icon: Icon, labelKey, defaultLabel, href }: { icon: any; labelKey: string; defaultLabel: string; href: string }) => {
+  const NavLink = ({ icon: Icon, labelKey, href }: { icon: any; labelKey: string; href: string }) => {
     const active = isActive(href);
-    const label = getLabel(labelKey, defaultLabel);
+    const label = t(labelKey);
     const link = (
       <Link
         href={`/${tenantId}/${href}`}
@@ -164,7 +122,7 @@ export function Sidebar({ tenantId, collapsed = false }: SidebarProps) {
       {/* Main nav */}
       <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5">
         {navItems.map((item) => (
-          <NavLink key={item.href} icon={item.icon} labelKey={item.key} defaultLabel={item.defaultLabel} href={item.href} />
+          <NavLink key={item.href} icon={item.icon} labelKey={item.key} href={item.href} />
         ))}
       </nav>
 
@@ -172,7 +130,7 @@ export function Sidebar({ tenantId, collapsed = false }: SidebarProps) {
       <div className="border-t border-border px-2 py-3 space-y-2">
         <div className="space-y-0.5">
           {bottomItems.map((item) => (
-            <NavLink key={item.href} icon={item.icon} labelKey={item.key} defaultLabel={item.defaultLabel} href={item.href} />
+            <NavLink key={item.href} icon={item.icon} labelKey={item.key} href={item.href} />
           ))}
         </div>
         
@@ -183,7 +141,7 @@ export function Sidebar({ tenantId, collapsed = false }: SidebarProps) {
               type="button"
               onClick={() => setLanguage(language === "pt" ? "es" : "pt")}
               className="flex-1 flex items-center justify-center gap-1.5 h-8 px-2 rounded-lg border border-border bg-background hover:bg-accent text-[11px] font-bold text-muted-foreground hover:text-foreground transition-all"
-              title={language === "pt" ? "Cambiar a Español" : "Mudar para Português"}
+              title={tH("switchLanguage")}
             >
               <LanguageFlag language={language} className="w-4 h-3 rounded-[2px] shrink-0" />
               <span>{language === "pt" ? "PT" : "ES"}</span>
@@ -194,17 +152,17 @@ export function Sidebar({ tenantId, collapsed = false }: SidebarProps) {
               type="button"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="flex-1 flex items-center justify-center gap-1.5 h-8 px-2 rounded-lg border border-border bg-background hover:bg-accent text-[11px] font-bold text-muted-foreground hover:text-foreground transition-all"
-              title="Alternar Tema"
+              title={tH("toggleTheme")}
             >
               {theme === "dark" ? (
                 <>
                   <Sun className="h-3.5 w-3.5 text-yellow-500" />
-                  <span>CLARO</span>
+                  <span>{tH("themeLight")}</span>
                 </>
               ) : (
                 <>
                   <Moon className="h-3.5 w-3.5 text-slate-700" />
-                  <span>ESCURO</span>
+                  <span>{tH("themeDark")}</span>
                 </>
               )}
             </button>

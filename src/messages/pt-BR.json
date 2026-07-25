@@ -13,7 +13,27 @@
     "back": "Voltar",
     "confirm": "Confirmar",
     "close": "Fechar",
-    "actions": "Ações"
+    "actions": "Ações",
+    "filter": "Filtrar",
+    "new": "Novo",
+    "add": "Adicionar",
+    "remove": "Remover",
+    "total": "Total",
+    "date": "Data",
+    "status": "Status",
+    "name": "Nome",
+    "description": "Descrição",
+    "quantity": "Quantidade",
+    "price": "Preço",
+    "cost": "Custo",
+    "yes": "Sim",
+    "no": "Não",
+    "all": "Todos",
+    "none": "Nenhum",
+    "noResults": "Nenhum resultado encontrado",
+    "saving": "Salvando...",
+    "required": "Obrigatório",
+    "optional": "Opcional"
   },
   "currency": {
     "pyg": "Guarani",
@@ -91,12 +111,87 @@
   },
   "reports": {
     "filters": {
-      "type": "Tipo de Relatório",
-      "exportPDF": "Exportar PDF"
+      "sales": "Vendas",
+      "purchases": "Compras",
+      "inventory": "Estoque",
+      "print": "Imprimir"
     },
     "table": {
       "date": "Data",
       "total": "Total"
+    }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "invoices": "Faturas",
+    "products": "Produtos",
+    "customers": "Clientes",
+    "suppliers": "Fornecedores",
+    "safra": "Safras",
+    "talhoes": "Talhões",
+    "silos": "Silos",
+    "rebanho": "Rebanho",
+    "frota": "Frota",
+    "funcionarios": "Funcionários",
+    "contratos": "Contratos",
+    "certificacoes": "Certificações",
+    "accounting": "Contabilidade",
+    "reports": "Relatórios",
+    "cambio": "Câmbio",
+    "settings": "Configurações",
+    "mobile": {
+      "dashboard": "Início",
+      "invoices": "Faturas",
+      "contratos": "Contratos",
+      "talhoes": "Talhões",
+      "menu": "Mais"
+    }
+  },
+  "header": {
+    "switchLanguage": "Cambiar a Español",
+    "toggleTheme": "Alternar tema",
+    "themeLight": "CLARO",
+    "themeDark": "ESCURO",
+    "user": "Usuário",
+    "changePassword": "Alterar senha",
+    "signOut": "Sair"
+  },
+  "ai": {
+    "title": "AXIS Farm IA",
+    "greeting": "Olá! Sou o Assistente AXIS Farm IA. Diga comandos como:\\n• 'cadastrar safra Soja 2026'\\n• 'adicionar talhão Leste de 25 hectares'\\n• 'cadastrar contrato 104 de soja para silo Lar de 200 toneladas'\\n\\nOu envie fotos de folhas de plantio para diagnosticar doenças, ou PDFs/Imagens de faturas de compra para cadastrá-las automaticamente.",
+    "online": "Online",
+    "analyzing": "Analisando...",
+    "sendFile": "Enviar Arquivo (Fatura ou Folha)",
+    "voiceInput": "Digitar por voz",
+    "inputPlaceholder": "Digite ou fale um comando...",
+    "speechLang": "pt-BR",
+    "genericError": "Desculpe, tive um problema ao processar seu comando.",
+    "fileError": "Desculpe, tive um problema ao salvar seu documento.",
+    "importTrigger": "Importar Fatura com IA",
+    "importProcessing": "Processando Fatura",
+    "importDone": "Importação Concluída",
+    "importFailed": "Falha no Processamento"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Senha",
+    "emailPlaceholder": "admin@axis.erp",
+    "brandSuffix": "Farm",
+    "tagline": "Gestão agrícola — safras, talhões e frota",
+    "signingIn": "Entrando...",
+    "signIn": "Entrar",
+    "invalidCredentials": "Email ou senha inválidos",
+    "loginError": "Erro ao fazer login"
+  },
+  "reportsDashboard": {
+    "statusConsolidated": "Status: Consolidado",
+    "totalIn": "Total Entradas",
+    "totalOut": "Total Saídas"
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Dashboard",
+      "subtitle": "Visão geral da fazenda"
     }
   }
 }

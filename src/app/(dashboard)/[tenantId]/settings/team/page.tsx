@@ -47,7 +47,9 @@ const translations = {
     noName: "Sem nome",
     delete: "Excluir",
     selectRole: "Selecione a função",
-    errorLoad: "Erro ao carregar equipe"
+    errorLoad: "Erro ao carregar equipe",
+    namePlaceholder: "Ex: João Silva",
+    emailPlaceholder: "Ex: joao@empresa.com"
   },
   es: {
     title: "Miembros del Equipo",
@@ -79,7 +81,9 @@ const translations = {
     noName: "Sin nombre",
     delete: "Eliminar",
     selectRole: "Seleccione la función",
-    errorLoad: "Error al cargar el equipo"
+    errorLoad: "Error al cargar el equipo",
+    namePlaceholder: "Ej: Juan Silva",
+    emailPlaceholder: "Ej: juan@empresa.com"
   }
 };
 
@@ -244,7 +248,7 @@ export default function TeamSettingsPage() {
                     required
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    placeholder="Ex: João Silva"
+                    placeholder={t.namePlaceholder}
                     className="bg-background border-border text-[13px] min-h-[44px] md:h-[40px] rounded-[8px] font-medium shadow-sm"
                   />
                 </div>
@@ -256,7 +260,7 @@ export default function TeamSettingsPage() {
                     required
                     value={newEmail}
                     onChange={(e) => setNewEmail(e.target.value)}
-                    placeholder="Ex: joao@fazenda.com"
+                    placeholder={t.emailPlaceholder}
                     className="bg-background border-border text-[13px] min-h-[44px] md:h-[40px] rounded-[8px] font-medium shadow-sm"
                   />
                 </div>

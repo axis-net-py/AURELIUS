@@ -37,7 +37,23 @@ const translations = {
     confirmDelete: "Tem certeza que deseja excluir este contrato? Esta ação não pode ser desfeita.",
     successSave: "Contrato salvo com sucesso!",
     errorSave: "Erro ao salvar contrato.",
-    errorDelete: "Erro ao excluir contrato."
+    errorDelete: "Erro ao excluir contrato.",
+    numberPlaceholder: "Ex: C-2026-001",
+    siloPlaceholder: "Ex: Silo Coamo, Lar, Cargill",
+    grainPlaceholder: "Ex: Soja, Milho, Trigo",
+    unitPlaceholder: "Unidade",
+    unitTon: "Toneladas (t)",
+    unitBag: "Sacas (60kg)",
+    unitKg: "Quilos (kg)",
+    currencyPlaceholder: "Moeda",
+    currencyUSD: "Dólar (USD)",
+    currencyBRL: "Real (BRL)",
+    currencyPYG: "Guarani (PYG)",
+    harvestPlaceholder: "Selecione a Safra",
+    statusPlaceholder: "Selecione status",
+    statusActive: "Ativo (Em vigor)",
+    statusDone: "Concluído (Entregue)",
+    statusCancelled: "Cancelado"
   },
   es: {
     newContract: "Nuevo Contrato",
@@ -60,10 +76,26 @@ const translations = {
     save: "Registrar Contrato",
     updating: "Guardando...",
     delete: "Eliminar",
-    confirmDelete: "¿Está seguro que deseja eliminar este contrato? Esta acción no se puede deshacer.",
+    confirmDelete: "¿Está seguro que desea eliminar este contrato? Esta acción no se puede deshacer.",
     successSave: "¡Contrato guardado con éxito!",
     errorSave: "Error al guardar el contrato.",
-    errorDelete: "Error al eliminar el contrato."
+    errorDelete: "Error al eliminar el contrato.",
+    numberPlaceholder: "Ej: C-2026-001",
+    siloPlaceholder: "Ej: Silo Coamo, Lar, Cargill",
+    grainPlaceholder: "Ej: Soja, Maíz, Trigo",
+    unitPlaceholder: "Unidad",
+    unitTon: "Toneladas (t)",
+    unitBag: "Bolsas (60kg)",
+    unitKg: "Kilos (kg)",
+    currencyPlaceholder: "Moneda",
+    currencyUSD: "Dólar (USD)",
+    currencyBRL: "Real (BRL)",
+    currencyPYG: "Guaraní (PYG)",
+    harvestPlaceholder: "Seleccione la Cosecha",
+    statusPlaceholder: "Seleccione estado",
+    statusActive: "Activo (Vigente)",
+    statusDone: "Concluido (Entregado)",
+    statusCancelled: "Anulado"
   }
 };
 
@@ -183,7 +215,7 @@ export function ContractSheet({
                 required
                 value={contractNumber}
                 onChange={(e) => setContractNumber(e.target.value)}
-                placeholder="Ex: C-2026-001"
+                placeholder={t.numberPlaceholder}
                 className="bg-background border-border text-[13px] min-h-[44px] md:h-[40px] rounded-[8px] font-medium shadow-sm"
               />
             </div>
@@ -193,7 +225,7 @@ export function ContractSheet({
                 required
                 value={siloName}
                 onChange={(e) => setSiloName(e.target.value)}
-                placeholder="Ex: Silo Coamo, Lar, Cargill"
+                placeholder={t.siloPlaceholder}
                 className="bg-background border-border text-[13px] min-h-[44px] md:h-[40px] rounded-[8px] font-medium shadow-sm"
               />
             </div>
@@ -207,7 +239,7 @@ export function ContractSheet({
                 required
                 value={grainType}
                 onChange={(e) => setGrainType(e.target.value)}
-                placeholder="Ex: Soja, Milho, Trigo"
+                placeholder={t.grainPlaceholder}
                 className="bg-background border-border text-[13px] min-h-[44px] md:h-[40px] rounded-[8px] font-medium shadow-sm"
               />
             </div>
@@ -227,12 +259,12 @@ export function ContractSheet({
               <Label className="text-[11px] text-primary uppercase tracking-widest font-extrabold">{t.unit}</Label>
               <Select value={unit} onValueChange={setUnit}>
                 <SelectTrigger className="bg-background border-border text-[13px] min-h-[44px] md:h-[40px] rounded-[8px]">
-                  <SelectValue placeholder="Unidade" />
+                  <SelectValue placeholder={t.unitPlaceholder} />
                 </SelectTrigger>
                 <SelectContent className="bg-popover border-border text-popover-foreground">
-                  <SelectItem value="TON" className="text-[12px]">Toneladas (t)</SelectItem>
-                  <SelectItem value="BAG" className="text-[12px]">Sacas (60kg)</SelectItem>
-                  <SelectItem value="KG" className="text-[12px]">Quilos (kg)</SelectItem>
+                  <SelectItem value="TON" className="text-[12px]">{t.unitTon}</SelectItem>
+                  <SelectItem value="BAG" className="text-[12px]">{t.unitBag}</SelectItem>
+                  <SelectItem value="KG" className="text-[12px]">{t.unitKg}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -256,12 +288,12 @@ export function ContractSheet({
               <Label className="text-[11px] text-primary uppercase tracking-widest font-extrabold">{t.currency}</Label>
               <Select value={currency} onValueChange={(val) => setCurrency(val as 'USD' | 'PYG' | 'BRL')}>
                 <SelectTrigger className="bg-background border-border text-[13px] min-h-[44px] md:h-[40px] rounded-[8px]">
-                  <SelectValue placeholder="Moeda" />
+                  <SelectValue placeholder={t.currencyPlaceholder} />
                 </SelectTrigger>
                 <SelectContent className="bg-popover border-border text-popover-foreground">
-                  <SelectItem value="USD" className="text-[12px]">Dólar (USD)</SelectItem>
-                  <SelectItem value="BRL" className="text-[12px]">Real (BRL)</SelectItem>
-                  <SelectItem value="PYG" className="text-[12px]">Guarani (PYG)</SelectItem>
+                  <SelectItem value="USD" className="text-[12px]">{t.currencyUSD}</SelectItem>
+                  <SelectItem value="BRL" className="text-[12px]">{t.currencyBRL}</SelectItem>
+                  <SelectItem value="PYG" className="text-[12px]">{t.currencyPYG}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -284,7 +316,7 @@ export function ContractSheet({
               <Label className="text-[11px] text-primary uppercase tracking-widest font-extrabold">{t.harvest}</Label>
               <Select value={harvestId} onValueChange={setHarvestId}>
                 <SelectTrigger className="bg-background border-border text-[13px] min-h-[44px] md:h-[40px] rounded-[8px]">
-                  <SelectValue placeholder="Selecione a Safra" />
+                  <SelectValue placeholder={t.harvestPlaceholder} />
                 </SelectTrigger>
                 <SelectContent className="bg-popover border-border text-popover-foreground">
                   <SelectItem value="none" className="text-[12px]">{t.none}</SelectItem>
@@ -298,12 +330,12 @@ export function ContractSheet({
               <Label className="text-[11px] text-primary uppercase tracking-widest font-extrabold">{t.status}</Label>
               <Select value={status} onValueChange={setStatus}>
                 <SelectTrigger className="bg-background border-border text-[13px] min-h-[44px] md:h-[40px] rounded-[8px]">
-                  <SelectValue placeholder="Selecione status" />
+                  <SelectValue placeholder={t.statusPlaceholder} />
                 </SelectTrigger>
                 <SelectContent className="bg-popover border-border text-popover-foreground">
-                  <SelectItem value="ACTIVE" className="text-[12px]">Ativo (Em vigor)</SelectItem>
-                  <SelectItem value="COMPLETED" className="text-[12px]">Concluído (Entregue)</SelectItem>
-                  <SelectItem value="CANCELLED" className="text-[12px]">Cancelado</SelectItem>
+                  <SelectItem value="ACTIVE" className="text-[12px]">{t.statusActive}</SelectItem>
+                  <SelectItem value="COMPLETED" className="text-[12px]">{t.statusDone}</SelectItem>
+                  <SelectItem value="CANCELLED" className="text-[12px]">{t.statusCancelled}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

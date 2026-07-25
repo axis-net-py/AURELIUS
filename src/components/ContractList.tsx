@@ -25,7 +25,12 @@ const translations = {
     cancelled: "Cancelado",
     ton: "t",
     bag: "sc",
-    kg: "kg"
+    kg: "kg",
+    actions: "Ações",
+    grainCard: "Grão / Cultura",
+    qtyContracted: "Qtd. Contratada",
+    priceAgreed: "Preço Acordado",
+    totalEstimate: "Estimativa Total"
   },
   es: {
     searchPlaceholder: "Buscar por nro de contrato, silo o grano...",
@@ -44,7 +49,12 @@ const translations = {
     cancelled: "Cancelado",
     ton: "t",
     bag: "sc",
-    kg: "kg"
+    kg: "kg",
+    actions: "Acciones",
+    grainCard: "Grano / Cultivo",
+    qtyContracted: "Cant. Contratada",
+    priceAgreed: "Precio Acordado",
+    totalEstimate: "Estimación Total"
   }
 };
 
@@ -144,7 +154,7 @@ export function ContractList({
                     <th className="p-4 text-[11px] font-bold uppercase tracking-widest text-primary">{t.delivery}</th>
                     <th className="p-4 text-[11px] font-bold uppercase tracking-widest text-primary">{t.safra}</th>
                     <th className="p-4 text-[11px] font-bold uppercase tracking-widest text-primary">{t.status}</th>
-                    <th className="p-4 text-[11px] font-bold uppercase tracking-widest text-primary text-right">Ações</th>
+                    <th className="p-4 text-[11px] font-bold uppercase tracking-widest text-primary text-right">{t.actions}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
@@ -208,23 +218,23 @@ export function ContractList({
                   {/* Card Content details */}
                   <div className="grid grid-cols-2 gap-3 text-[12px]">
                     <div>
-                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest block">Grão / Cultura</span>
+                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest block">{t.grainCard}</span>
                       <span className="font-semibold text-foreground capitalize mt-0.5 block">{c.grainType}</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest block">Qtd. Contratada</span>
+                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest block">{t.qtyContracted}</span>
                       <span className="font-semibold text-foreground mt-0.5 block">
                         {Number(c.quantity).toLocaleString()} {getUnitSymbol(c.unit)}
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest block">Preço Acordado</span>
+                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest block">{t.priceAgreed}</span>
                       <span className="font-mono font-bold text-foreground mt-0.5 block">
                         {formatCurrency(Number(c.pricePerUnit), c.currency as any)}
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest block">Estimativa Total</span>
+                      <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest block">{t.totalEstimate}</span>
                       <span className="font-mono font-extrabold text-primary dark:text-[#4ade80] mt-0.5 block">
                         {formatCurrency(totalEst, c.currency as any)}
                       </span>

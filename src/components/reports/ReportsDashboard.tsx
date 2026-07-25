@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 import { getReportData, ReportItem } from "@/app/actions/reports";
 import { useLanguage } from "@/components/language-provider";
@@ -23,6 +24,8 @@ export default function ReportsDashboard() {
     new Date().toISOString().split("T")[0]
   );
   const [data, setData] = useState<ReportItem[]>([]);
+
+  const tRD = useTranslations("reportsDashboard");
 
   const labels = {
     pt: {
@@ -181,7 +184,7 @@ export default function ReportsDashboard() {
           </div>
           <div className="text-right text-[10px] text-muted-foreground font-mono">
             <div>Gerado em: {new Date().toLocaleDateString(language === 'pt' ? 'pt-BR' : 'es-PY')} {new Date().toLocaleTimeString(language === 'pt' ? 'pt-BR' : 'es-PY', {hour: '2-digit', minute:'2-digit'})}</div>
-            <div>Status: Consolidado</div>
+            <div>{tRD("statusConsolidated")}</div>
           </div>
         </div>
       </div>
@@ -421,7 +424,7 @@ export default function ReportsDashboard() {
               <>
                 <div className="text-right">
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold block">
-                    Total Entradas
+                    {tRD("totalIn")}
                   </span>
                   <span className="text-lg font-bold text-primary print:text-black mt-1 block">
                     {totalEntrada.toFixed(2)}
@@ -429,7 +432,7 @@ export default function ReportsDashboard() {
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold block">
-                    Total Saídas
+                    {tRD("totalOut")}
                   </span>
                   <span className="text-lg font-bold text-destructive print:text-black mt-1 block">
                     {totalSaida.toFixed(2)}
